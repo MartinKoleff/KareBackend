@@ -31,7 +31,7 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
             nullable = false
     )
     @NotNull(message = "User id id must not be empty.")
-    private Integer userId;
+    private String userId;
 
     @Column(
             name = USERNAME_COLUMN,
