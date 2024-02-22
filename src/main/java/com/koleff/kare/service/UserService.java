@@ -28,21 +28,17 @@ public class UserService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+
+    /**
+     * Used in AuthenticationManager
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("In User Service!");
+        logger.info(String.format("Fetching user details for username %s.", username));
 
-        if(!username.equals("Koleff")) throw new UsernameNotFoundException("Username Koleff not found");
-
-        Set<Role> roles = new HashSet<>();
-        roles.add(new Role(1, "USER"));
-
-        return new User(
-                UUID.randomUUID().toString(),
-                "Koleff",
-                passwordEncoder.encode("epic_password_69"),
-                "koleff@aitos.com",
-                roles
-        );
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        String.format("User with username %s doesn't exist in the DB.", username)
+                ));
     }
 }
