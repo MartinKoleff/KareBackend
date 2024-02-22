@@ -11,6 +11,7 @@ import com.koleff.kare.repository.RoleRepository;
 import com.koleff.kare.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +31,7 @@ public class AuthenticationService {
     private final JWTTokenService jwtTokenService;
     private final static Logger logger = LogManager.getLogger(AuthenticationService.class);
 
+    @Autowired
     public AuthenticationService(UserRepository userRepository,
                                  RoleRepository roleRepository,
                                  PasswordEncoder passwordEncoder,

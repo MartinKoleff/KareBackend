@@ -31,7 +31,7 @@ public class ApplicationConfiguration {
      * Always add Admin user and all roles in the DB
      */
     @Bean
-    public CommandLineRunner run() {
+    public CommandLineRunner initializeDatabase() {
         return args -> {
 
             //DB is initialized

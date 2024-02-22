@@ -21,7 +21,6 @@ public class JWTTokenService implements TokenService {
 
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
-
     private final long expirationTime;
 
     @Autowired
