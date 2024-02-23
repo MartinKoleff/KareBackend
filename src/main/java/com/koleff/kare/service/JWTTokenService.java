@@ -1,23 +1,26 @@
 package com.koleff.kare.service;
 
+import com.koleff.kare.models.entity.Role;
+import com.koleff.kare.models.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.token.Token;
 import org.springframework.security.core.token.TokenService;
-import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.JwtEncoder;
-import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
-public class JWTTokenService implements TokenService {
+public class JWTTokenService{
 
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
@@ -57,37 +60,47 @@ public class JWTTokenService implements TokenService {
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    @Override
-    public Token allocateToken(String extendedInformation) {
-        return null;
+    public String generateToken(User user) {
+
+        //Roles
+        String roles = user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(" "));
+
+        //Creation
+        Instant now = Instant.now();
+
+        //Expiration
+        Date creationDate = new Date();
+        Date expirationDate = new Date(creationDate.getTime() + this.expirationTime);
+
+        //Claims setup
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("self") //by this backend server
+                .issuedAt(now)
+                .claim("roles", roles)
+                .claim("username", user.getUsername())
+                .claim("email", user.getEmail())
+                .expiresAt(expirationDate.toInstant()) //expiration
+                .build();
+
+        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    @Override
-    public Token verifyToken(String key) {
-        return null;
+    public String extractUsername(String token) {
+        Jwt jwt = jwtDecoder.decode(token);
+        return jwt.getClaim("username");
+    }
+
+    public boolean validateToken(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    private boolean isTokenExpired(String token) {
+        Jwt jwt = jwtDecoder.decode(token);
+        return Objects.requireNonNull(jwt.getExpiresAt()).isBefore(Instant.now());
     }
 }
 
-//-----------Idea-----------
-//	public String generateToken(UserEntity userEntity) {
-//		HashMap<String, Object> claims = new HashMap<>();
-//		claims.put("email", userEntity.getEmail());
-//		claims.put("username", userEntity.getUsername());
-//		claims.put("role", "USER");
-//		return this.jwtGenerator.generateToken(userEntity.getId(), claims);
-//	}
 
-//public String generateToken(String subjectId, Map<String, Object> claims) {
-//		Date creationDate = new Date();
-//		Date expirationDate = new Date(creationDate.getTime() + this.expirationTime);
-//
-//		Map<String, Object> actualClaims = new HashMap<>(claims);
-//		actualClaims.put(SUBJECT_ID_CLAIMS_NAME, subjectId);
-//
-//		return Jwts.builder()
-//			.setClaims(actualClaims)
-//			.setIssuedAt(creationDate)
-//			.setExpiration(expirationDate)
-//			.signWith(Keys.hmacShaKeyFor(this.secretKey.getBytes()))
-//			.compact();
-//	}
