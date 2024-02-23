@@ -1,6 +1,7 @@
 package com.koleff.kare.models.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,7 +21,7 @@ import static com.koleff.kare.models.entity.User.TABLE_NAME;
 @AllArgsConstructor
 public @Data class User implements UserDetails { //TODO: Add Jackson serialization / deserialization...
 
-    public static final String TABLE_NAME = "users";
+    public static final String TABLE_NAME = "user_table";
     public static final String ID_COLUMN = "user_id";
     public static final String EMAIL_COLUMN = "email";
     public static final String USERNAME_COLUMN = "username";
@@ -35,7 +36,7 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
             nullable = false
     )
     @NotNull(message = "User id id must not be empty.")
-    private String userId;
+    private String id;
 
     @Column(
             name = USERNAME_COLUMN,
@@ -59,6 +60,7 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
             nullable = false
     )
     @NotNull(message = "Email must not be empty.")
+    @Email
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
