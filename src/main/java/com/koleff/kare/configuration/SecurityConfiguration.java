@@ -32,7 +32,7 @@ public class SecurityConfiguration {
      * Endpoints that require no roles - no authorization.
      */
     private static final String[] WHITELIST_URLS = { //All users can authorize
-            "/api/v1/auth/**",
+            "api/v1/auth/**",
     };
 
 
@@ -59,8 +59,8 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers(WHITELIST_URLS).permitAll();
 
-                    request.requestMatchers("/admin/**").hasRole("ADMIN");
-                    request.requestMatchers(HttpMethod.GET, "/user/**").hasAnyRole("ADMIN", "USER");
+                    request.requestMatchers("api/v1/admin/**").hasRole("ADMIN");
+                    request.requestMatchers(HttpMethod.GET, "api/v1/user/**").hasAnyRole("ADMIN", "USER");
 
                     request.anyRequest().authenticated();
                 })

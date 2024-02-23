@@ -3,7 +3,7 @@ package com.koleff.kare.controller;
 import com.koleff.kare.models.dto.LoginResponseDTO;
 import com.koleff.kare.models.dto.RegistrationDTO;
 import com.koleff.kare.models.entity.User;
-import com.koleff.kare.service.AuthenticationService;
+import com.koleff.kare.service.AuthenticationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/v1/auth")
 @CrossOrigin("*")
 public class AuthenticationControllerImpl implements AuthenticationController {
 
-	private final AuthenticationService authenticationService;
+	private final AuthenticationServiceImpl authenticationService;
 
     @Autowired
-	public AuthenticationControllerImpl(AuthenticationService authenticationService) {
+	public AuthenticationControllerImpl(AuthenticationServiceImpl authenticationService) {
 		this.authenticationService = authenticationService;
 	}
 
