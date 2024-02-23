@@ -1,6 +1,7 @@
 package com.koleff.kare.controller;
 
 import com.koleff.kare.service.UserService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,11 +20,13 @@ public class UserController {
     }
 
     @GetMapping("/test")
+    @PreAuthorize("hasRole('USER')")
     public String testUserAccess(){
         return "User access level";
     }
 
     @GetMapping("/test2")
+    @PreAuthorize("hasRole('USER')")
     public UserDetails testUserAccess2(){
         return userService.loadUserByUsername("Koleff");
     }
