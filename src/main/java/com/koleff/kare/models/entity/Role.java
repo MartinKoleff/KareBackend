@@ -34,10 +34,10 @@ public @Data class Role implements GrantedAuthority {
         this.authority = authority;
     }
 
-    @Override
-    public String getAuthority() { //Fixes 'ROLE_' prefix needed in front of granted authorities...
-        return "ROLE_" + authority;
-    }
+//    @Override
+//    public String getAuthority() { //Fixes 'ROLE_' prefix needed in front of granted authorities...
+//        return "ROLE_" + authority;
+//    }
 }
 
 //TODO: migrate roles to enums with permission lists...
