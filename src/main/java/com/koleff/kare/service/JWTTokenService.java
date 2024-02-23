@@ -60,33 +60,6 @@ public class JWTTokenService{
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
-    public String generateToken(User user) {
-
-        //Roles
-        String roles = user.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(" "));
-
-        //Creation
-        Instant now = Instant.now();
-
-        //Expiration
-        Date creationDate = new Date();
-        Date expirationDate = new Date(creationDate.getTime() + this.expirationTime);
-
-        //Claims setup
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .issuer("self") //by this backend server
-                .issuedAt(now)
-                .claim("roles", roles)
-                .claim("username", user.getUsername())
-                .claim("email", user.getEmail())
-                .expiresAt(expirationDate.toInstant()) //expiration
-                .build();
-
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
-    }
-
     public String extractUsername(String token) {
         Jwt jwt = jwtDecoder.decode(token);
         return jwt.getClaim("username");
