@@ -77,7 +77,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
             String accessToken = jwtTokenService.generateAccessToken(user);
             logger.info(String.format("Access token generated: %s", accessToken));
-            jwtTokenService.saveAccessToken(user, accessToken); //only save the access token
 
             String refreshToken = jwtTokenService.generateRefreshToken(user);
             logger.info(String.format("Refresh token generated: %s", refreshToken));
@@ -105,11 +104,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
+        //Validate refresh token
         if (jwtTokenService.validateToken(refreshToken, user)) {
 
             //Generate new tokens
             String newAccessToken = jwtTokenService.generateAccessToken(user);
+            logger.info(String.format("New access token generated: %s", newAccessToken));
+
             String newRefreshToken = jwtTokenService.generateRefreshToken(user);
+            logger.info(String.format("New refresh token generated: %s", newRefreshToken));
 
             return AuthenticationResponse.builder()
                     .refreshToken(newRefreshToken)

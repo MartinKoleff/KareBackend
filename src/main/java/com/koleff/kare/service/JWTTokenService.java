@@ -41,7 +41,11 @@ public class JWTTokenService {
 
     public String generateAccessToken(User user) {
         JwtClaimsSet claims = buildClaimsSet(user.getId(), accessTokenExpirationTime, user);
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+        String accessToken = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+        //Only save access token...
+        saveAccessToken(user, accessToken);
+        return accessToken;
     }
 
     public String generateRefreshToken(User user) {
@@ -77,7 +81,7 @@ public class JWTTokenService {
     /**
      * Token functionalities
      */
-    public void saveAccessToken(User user, String jwtToken) {
+    private void saveAccessToken(User user, String jwtToken) {
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
