@@ -1,7 +1,5 @@
 package com.koleff.kare.service;
 
-import com.koleff.kare.models.entity.Role;
-import com.koleff.kare.models.entity.User;
 import com.koleff.kare.repository.UserRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,21 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class UserService implements UserDetailsService {
 
-    private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final static Logger logger = LogManager.getLogger(UserService.class);
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder,
-                       UserRepository userRepository) {
-        this.passwordEncoder = passwordEncoder;
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

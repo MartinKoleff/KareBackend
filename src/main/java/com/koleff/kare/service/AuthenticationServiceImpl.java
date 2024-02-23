@@ -101,4 +101,41 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .build();
         }
     }
+
+    //TODO: write more modern way...
+//    public void refreshToken(
+//            HttpServletRequest request,
+//            HttpServletResponse response
+//    ) throws IOException {
+//        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+//        final String refreshToken;
+//        final String username;
+//
+//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+//            return;
+//        }
+//
+//        refreshToken = authHeader.substring(7);
+//        username = jwtTokenService.extractUsername(refreshToken);
+//
+//        if (username != null) {
+//            var user = userRepository.findByUsername(username)
+//                    .orElseThrow();
+//
+//            if (jwtTokenService.validateToken(refreshToken, user)) {
+//
+//                var accessToken = jwtTokenService.generateAccessToken(user);
+//                jwtTokenService.revokeAllUserTokens(user);
+//                jwtTokenService.saveAccessToken(user, accessToken);
+//
+//                var authResponse = AuthenticationResponse.builder()
+//                        .accessToken(accessToken)
+//                        .refreshToken(refreshToken)
+//                        .build();
+//
+//                //Update response with new one
+//                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
+//            }
+//        }
+//    }
 }

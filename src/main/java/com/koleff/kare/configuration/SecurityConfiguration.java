@@ -76,7 +76,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 //                .httpBasic(Customizer.withDefaults());
-//                .formLogin(Customizer.withDefaults())
+//                .formLogin(Customizer.withDefaults()) //TODO: research...
 
         return http.build();
     }
