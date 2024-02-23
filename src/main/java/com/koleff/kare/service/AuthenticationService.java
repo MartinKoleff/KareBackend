@@ -8,4 +8,6 @@ public interface AuthenticationService {
     User registerUser(String username, String password, String email);
 
     AuthenticationResponse loginUser(String username, String password);
+
+    AuthenticationResponse refreshToken(String refreshToken);
 }

@@ -1,22 +1,17 @@
 package com.koleff.kare.service;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.koleff.kare.models.dto.AuthenticationResponse;
 import com.koleff.kare.models.entity.Role;
 import com.koleff.kare.models.entity.User;
 import com.koleff.kare.repository.RoleRepository;
 import com.koleff.kare.repository.UserRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -102,40 +97,30 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
     }
 
-    //TODO: write more modern way...
-//    public void refreshToken(
-//            HttpServletRequest request,
-//            HttpServletResponse response
-//    ) throws IOException {
-//        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-//        final String refreshToken;
-//        final String username;
-//
-//        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-//            return;
-//        }
-//
-//        refreshToken = authHeader.substring(7);
-//        username = jwtTokenService.extractUsername(refreshToken);
-//
-//        if (username != null) {
-//            var user = userRepository.findByUsername(username)
-//                    .orElseThrow();
-//
-//            if (jwtTokenService.validateToken(refreshToken, user)) {
-//
-//                var accessToken = jwtTokenService.generateAccessToken(user);
-//                jwtTokenService.revokeAllUserTokens(user);
-//                jwtTokenService.saveAccessToken(user, accessToken);
-//
-//                var authResponse = AuthenticationResponse.builder()
-//                        .accessToken(accessToken)
-//                        .refreshToken(refreshToken)
-//                        .build();
-//
-//                //Update response with new one
-//                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
-//            }
-//        }
-//    }
+    @Override
+    public AuthenticationResponse refreshToken(String refreshToken) {
+
+        //Find user from the token
+        String userId = jwtTokenService.extractUserId(refreshToken);
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        if (jwtTokenService.validateToken(refreshToken, user)) {
+
+            //Generate new tokens
+            String newAccessToken = jwtTokenService.generateAccessToken(user);
+            String newRefreshToken = jwtTokenService.generateRefreshToken(user);
+
+            return AuthenticationResponse.builder()
+                    .refreshToken(newRefreshToken)
+                    .accessToken(newAccessToken)
+                    .build();
+        }
+
+        //Invalid token
+        return AuthenticationResponse.builder()
+                .refreshToken("")
+                .accessToken("")
+                .build();
+    }
 }

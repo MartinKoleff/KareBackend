@@ -33,4 +33,9 @@ public class AuthenticationControllerImpl implements AuthenticationController {
 	public AuthenticationResponse loginUser(@RequestBody RegistrationDTO body){
 		return authenticationService.loginUser(body.username(), body.password());
 	}
+
+	@PostMapping("/refreshtoken")
+	public AuthenticationResponse refreshToken(String refreshToken) {
+		return authenticationService.refreshToken(refreshToken);
+	}
 }
