@@ -71,22 +71,34 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public AuthenticationResponse loginUser(String username, String password) {
 
-        try{
+        try {
             Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, password)
+                    new UsernamePasswordAuthenticationToken(username, password)
             );
 
             //Check for valid user in the DB
             User user = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-            String token = jwtTokenService.generateToken(auth);
-            logger.info(String.format("Access token generated: %s", token));
+            String accessToken = jwtTokenService.generateAccessToken(user);
+            logger.info(String.format("Access token generated: %s", accessToken));
+            jwtTokenService.saveAccessToken(user, accessToken); //only save the access token
 
-            return new LoginResponseDTO(userRepository.findByUsername(username).get(), token);
+            String refreshToken = jwtTokenService.generateRefreshToken(user);
+            logger.info(String.format("Refresh token generated: %s", refreshToken));
 
-        } catch(AuthenticationException e){
-            return new LoginResponseDTO(null, "");
+            return AuthenticationResponse.builder()
+                    .accessToken(accessToken)
+                    .refreshToken(refreshToken)
+                    .user(user)
+                    .build();
+        } catch (AuthenticationException e) {
+
+            return AuthenticationResponse.builder()
+                    .accessToken("")
+                    .refreshToken("")
+                    .user(null)
+                    .build();
         }
     }
 }
