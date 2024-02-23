@@ -1,17 +1,22 @@
 package com.koleff.kare.service;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-import com.koleff.kare.models.dto.LoginResponseDTO;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.koleff.kare.models.dto.AuthenticationResponse;
 import com.koleff.kare.models.entity.Role;
 import com.koleff.kare.models.entity.User;
 import com.koleff.kare.repository.RoleRepository;
 import com.koleff.kare.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class AuthenticationServiceImpl implements AuthenticationService{
+public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -34,10 +39,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
     @Autowired
     public AuthenticationServiceImpl(UserRepository userRepository,
-                                 RoleRepository roleRepository,
-                                 PasswordEncoder passwordEncoder,
-                                 AuthenticationManager authenticationManager,
-                                 JWTTokenService jwtTokenService) {
+                                     RoleRepository roleRepository,
+                                     PasswordEncoder passwordEncoder,
+                                     AuthenticationManager authenticationManager,
+                                     JWTTokenService jwtTokenService) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -46,7 +51,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     }
 
     @Override
-    public User registerUser(String username, String password, String email){
+    public User registerUser(String username, String password, String email) { //TODO: add access and refresh token generation directly instead of having to login...
 
         //Encode the password
         String encodedPassword = passwordEncoder.encode(password);
@@ -64,7 +69,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     }
 
     @Override
-    public LoginResponseDTO loginUser(String username, String password){
+    public AuthenticationResponse loginUser(String username, String password) {
 
         try{
             Authentication auth = authenticationManager.authenticate(

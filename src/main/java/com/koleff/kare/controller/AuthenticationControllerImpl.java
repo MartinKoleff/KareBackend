@@ -1,6 +1,6 @@
 package com.koleff.kare.controller;
 
-import com.koleff.kare.models.dto.LoginResponseDTO;
+import com.koleff.kare.models.dto.AuthenticationResponse;
 import com.koleff.kare.models.dto.RegistrationDTO;
 import com.koleff.kare.models.entity.User;
 import com.koleff.kare.service.AuthenticationServiceImpl;
@@ -30,7 +30,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
 	}
 
 	@PostMapping("/login")
-	public LoginResponseDTO loginUser(@RequestBody RegistrationDTO body){
+	public AuthenticationResponse loginUser(@RequestBody RegistrationDTO body){
 		return authenticationService.loginUser(body.username(), body.password());
 	}
 }
