@@ -108,6 +108,16 @@ public class JWTTokenService {
         return jwt.getClaim("username");
     }
 
+    public String extractEmail(String token) {
+        Jwt jwt = jwtDecoder.decode(token);
+        return jwt.getClaim("email");
+    }
+
+    public String extractUserId(String token) {
+        Jwt jwt = jwtDecoder.decode(token);
+        return jwt.getClaim("sub"); //subject
+    }
+
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
