@@ -58,7 +58,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> {
                     request.requestMatchers(WHITELIST_URLS).permitAll();
@@ -74,11 +74,8 @@ public class SecurityConfiguration {
                         )
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
-                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
-//                .httpBasic(Customizer.withDefaults());
-//                .formLogin(Customizer.withDefaults()) //TODO: research...
-
-        return http.build();
+                .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .build();
     }
 
 
