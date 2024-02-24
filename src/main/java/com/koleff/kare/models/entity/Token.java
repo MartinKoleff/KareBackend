@@ -33,6 +33,7 @@ public class Token {
     public static final String REVOKED_COLUMN = "revoked";
     public static final String EXPIRED_COLUMN = "expired";
     public static final String EXPIRY_TIME_COLUMN = "expiry_time";
+    public static final String IS_REFRESH_TOKEN_COLUMN = "is_refresh_token";
 
     @Id
     @GeneratedValue
@@ -81,6 +82,15 @@ public class Token {
     )
     @NotNull(message = "Expired must not be empty.")
     public boolean expired;
+
+    @Column(
+            name = IS_REFRESH_TOKEN_COLUMN,
+            unique = false,
+            updatable = false,
+            nullable = false
+    )
+    @NotNull(message = "Is refresh token must not be empty.")
+    public boolean isRefreshToken;
 
     @Column(
             name = EXPIRY_TIME_COLUMN,

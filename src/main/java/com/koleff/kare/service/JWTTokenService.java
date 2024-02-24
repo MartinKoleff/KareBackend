@@ -47,16 +47,22 @@ public class JWTTokenService {
 
     public String generateAccessToken(User user) {
         JwtClaimsSet claims = buildClaimsSet(user.getId(), accessTokenExpirationTime, user);
-        String accessToken = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
 
-        //Only save access token...
-        saveAccessToken(user, accessToken);
-        return accessToken;
+        return generateToken(user, claims, false);
     }
 
     public String generateRefreshToken(User user) {
         JwtClaimsSet claims = buildClaimsSet(user.getId(), refreshTokenExpirationTime, user);
-        return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+        return generateToken(user, claims, true);
+    }
+
+    private String generateToken(User user, JwtClaimsSet claims, Boolean isRefreshToken) {
+        String token = jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+
+        saveToken(user, token, isRefreshToken);
+
+        return token;
     }
 
     private JwtClaimsSet buildClaimsSet(String subject, long expirationTimeMillis, User user) {
@@ -87,13 +93,14 @@ public class JWTTokenService {
     /**
      * Token functionalities
      */
-    private void saveAccessToken(User user, String jwtToken) {
+    private void saveToken(User user, String jwtToken, Boolean isRefreshToken) {
         var token = Token.builder()
                 .user(user)
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
+                .isRefreshToken(isRefreshToken)
                 .expiryTime(Instant.now().plus(accessTokenExpirationTime / 1000, ChronoUnit.SECONDS))
                 .build();
         Token savedToken = tokenRepository.save(token);
