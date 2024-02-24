@@ -5,11 +5,7 @@ import com.koleff.kare.models.dto.RegistrationDTO;
 import com.koleff.kare.models.entity.User;
 import com.koleff.kare.service.AuthenticationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
@@ -35,7 +31,7 @@ public class AuthenticationControllerImpl implements AuthenticationController {
 	}
 
 	@PostMapping("/refreshtoken")
-	public AuthenticationResponse refreshToken(String refreshToken) {
+	public AuthenticationResponse refreshToken(@RequestParam("refreshToken") String refreshToken) {
 		return authenticationService.refreshToken(refreshToken);
 	}
 }
