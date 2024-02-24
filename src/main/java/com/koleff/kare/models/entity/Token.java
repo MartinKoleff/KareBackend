@@ -32,6 +32,7 @@ public class Token {
     public static final String TOKEN_TYPE_COLUMN = "token_type";
     public static final String REVOKED_COLUMN = "revoked";
     public static final String EXPIRED_COLUMN = "expired";
+    public static final String EXPIRY_TIME_COLUMN = "expiry_time";
 
     @Id
     @GeneratedValue
@@ -81,7 +82,14 @@ public class Token {
     @NotNull(message = "Expired must not be empty.")
     public boolean expired;
 
-  public boolean expired;
+    @Column(
+            name = EXPIRY_TIME_COLUMN,
+            nullable = false,
+            unique = false,
+            updatable = true
+    )
+    @NotNull(message = "Expiry time must not be empty.")
+    public Instant expiryTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
