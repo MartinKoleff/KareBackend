@@ -35,7 +35,7 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
             unique = true,
             nullable = false
     )
-    @NotNull(message = "User id id must not be empty.")
+    @NotNull(message = "User id must not be empty.")
     private String id;
 
     @Column(
@@ -75,13 +75,6 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
         super();
         authorities = new HashSet<>();
     }
-
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return authorities.stream()
-//                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getAuthority()))
-//                .collect(Collectors.toList());
-//    }
 
     /**
      * If you want account locking capabilities create variables and ways to set them for the methods below

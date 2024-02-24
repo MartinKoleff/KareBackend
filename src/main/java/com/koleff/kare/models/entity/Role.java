@@ -1,8 +1,10 @@
 package com.koleff.kare.models.entity;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
 import jakarta.persistence.Column;
@@ -11,33 +13,41 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static com.koleff.kare.models.entity.Role.TABLE_NAME;
 
 @Entity
-@Table(name = "role_table")
-@NoArgsConstructor
+@Table(name = TABLE_NAME)
 @AllArgsConstructor
+@RequiredArgsConstructor
 public @Data class Role implements GrantedAuthority {
+
+    public static final String TABLE_NAME = "role_table";
+    public static final String ID_COLUMN = "role_id";
+    public static final String AUTHORITY_COLUMN = "authority";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "role_id")
+    @Column(
+            name = ID_COLUMN,
+            nullable = false,
+            unique = true,
+            updatable = false
+    )
+    @NotNull(message = "Role id must not be empty.")
     private Integer roleId;
 
-    @Column(name = "authority")
+    @Column(name = AUTHORITY_COLUMN,
+            nullable = false,
+            unique = false,
+            updatable = true
+    )
+    @NotNull(message = "Authority must not be empty.")
     private String authority;
 
     public Role(String authority) {
         this.authority = authority;
     }
-
-//    @Override
-//    public String getAuthority() { //Fixes 'ROLE_' prefix needed in front of granted authorities...
-//        return "ROLE_" + authority;
-//    }
 }
 
 //TODO: migrate roles to enums with permission lists...
