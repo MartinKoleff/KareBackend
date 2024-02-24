@@ -4,6 +4,8 @@ import com.koleff.kare.models.entity.Token;
 import com.koleff.kare.models.entity.TokenType;
 import com.koleff.kare.models.entity.User;
 import com.koleff.kare.repository.TokenRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -13,6 +15,8 @@ import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Date;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,6 +29,8 @@ public class JWTTokenService {
     private final long accessTokenExpirationTime;
     private final long refreshTokenExpirationTime;
     private final TokenRepository tokenRepository;
+    private final static Logger logger = LogManager.getLogger(JWTTokenService.class);
+
 
     @Autowired
     public JWTTokenService(JwtEncoder jwtEncoder,
@@ -49,7 +55,7 @@ public class JWTTokenService {
     }
 
     public String generateRefreshToken(User user) {
-        JwtClaimsSet claims = buildClaimsSet(user.getId(), refreshTokenExpirationTime, null);
+        JwtClaimsSet claims = buildClaimsSet(user.getId(), refreshTokenExpirationTime, user);
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
@@ -71,7 +77,7 @@ public class JWTTokenService {
 
             claimsBuilder.claim("roles", roles);
             claimsBuilder.claim("username", user.getUsername());
-//            claimsBuilder.claim("email", user.getEmail());
+            claimsBuilder.claim("email", user.getEmail());
         }
 
         return claimsBuilder.build();
@@ -88,8 +94,10 @@ public class JWTTokenService {
                 .tokenType(TokenType.BEARER)
                 .expired(false)
                 .revoked(false)
+                .expiryTime(Instant.now().plus(accessTokenExpirationTime / 1000, ChronoUnit.SECONDS))
                 .build();
-        tokenRepository.save(token);
+        Token savedToken = tokenRepository.save(token);
+        logger.info(String.format("Token saved in DB: %s", savedToken));
     }
 
     public void revokeAllUserTokens(User user) {
@@ -119,17 +127,17 @@ public class JWTTokenService {
 
     public String extractUserId(String token) {
         Jwt jwt = jwtDecoder.decode(token);
-        return jwt.getClaim("sub"); //subject
+        return jwt.getSubject(); //sub
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) {
+    public boolean validateToken(String token, UserDetails userDetails) throws NullPointerException {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    private boolean isTokenExpired(String token) {
+    private boolean isTokenExpired(String token) throws NullPointerException {
         Jwt jwt = jwtDecoder.decode(token);
-        return Objects.requireNonNull(jwt.getExpiresAt()).isBefore(Instant.now());
+        return jwt.getExpiresAt().isBefore(Instant.now());
     }
 }
 
