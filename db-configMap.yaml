@@ -3,5 +3,6 @@ kind : ConfigMap
 metadata:
   name : db-config
 data:
-  host : "psql-db"
+  host : "divine-actor-415420:us-central1:postgres-instance"
+#  34.122.54.112
   dbName: "kare"
