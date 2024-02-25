@@ -1,18 +1,41 @@
 package com.koleff.kare.models.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import static com.koleff.kare.models.entity.Permission.TABLE_NAME;
+
+@Entity
+@Table(name = TABLE_NAME)
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
-public enum Permission {
+public class Permission {
 
-    CREATE_WORKOUT(1, "user:create_workout"),
-    DELETE_WORKOUT(2, "user:delete_workout"),
-    FETCH_WORKOUTS(3, "user:fetch_workouts"),
-    SELECT_WORKOUT(4, "user:select_workout"),
-    RENAME_WORKOUT(5, "user:rename_workout"),
-    ADD_EXERCISE(6, "user:add_exercise"),
-    DELETE_EXERCISE(7, "user:delete_exercise");
+    public static final String TABLE_NAME = "permission_table";
+    public static final String ID_COLUMN = "permission_id";
+    public static final String PERMISSION_COLUMN = "permission";
 
-    private final Integer id;
-    private final String permission;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(
+            name = ID_COLUMN,
+            updatable = false,
+            unique = true,
+            nullable = false
+    )
+    @NotNull(message = "Permission id must not be empty.")
+    private Long id;
+
+    @Column(
+            name = PERMISSION_COLUMN,
+            unique = true,
+            nullable = false,
+            updatable = false
+    )
+    @NotNull(message = "Permission must not be empty.")
+    private String permission; //name
 }

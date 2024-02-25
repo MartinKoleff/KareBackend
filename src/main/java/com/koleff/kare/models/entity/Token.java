@@ -27,7 +27,7 @@ import static com.koleff.kare.models.entity.Token.TABLE_NAME;
 public class Token {
 
     public static final String TABLE_NAME = "token_table";
-    public static final String ID_COLUMN = "id";
+    public static final String ID_COLUMN = "token_id";
     public static final String TOKEN_COLUMN = "token";
     public static final String TOKEN_TYPE_COLUMN = "token_type";
     public static final String REVOKED_COLUMN = "revoked";

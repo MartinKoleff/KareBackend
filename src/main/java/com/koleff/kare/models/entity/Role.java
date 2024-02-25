@@ -1,50 +1,58 @@
 package com.koleff.kare.models.entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.HashSet;
 import java.util.Set;
 
+import static com.koleff.kare.models.entity.Role.TABLE_NAME;
+
+@Entity
+@Table(name = TABLE_NAME)
+@Data
+@NoArgsConstructor
 @AllArgsConstructor
-public enum Role {
+public class Role implements GrantedAuthority {
 
-    USER(1,
-            Set.of(
-                    Permission.CREATE_WORKOUT,
-                    Permission.DELETE_WORKOUT,
-                    Permission.FETCH_WORKOUTS,
-                    Permission.SELECT_WORKOUT,
-                    Permission.RENAME_WORKOUT,
-                    Permission.ADD_EXERCISE,
-                    Permission.DELETE_EXERCISE
-            )
-    ),
+    public static final String TABLE_NAME = "roles_table";
+    public static final String ID_COLUMN = "role_id";
+    public static final String AUTHORITY_COLUMN = "authority";
 
-    ADMIN(2,
-            Set.of(
-                    Permission.CREATE_WORKOUT,
-                    Permission.DELETE_WORKOUT,
-                    Permission.FETCH_WORKOUTS,
-                    Permission.SELECT_WORKOUT,
-                    Permission.RENAME_WORKOUT,
-                    Permission.ADD_EXERCISE,
-                    Permission.DELETE_EXERCISE
-            )
-    ),
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(
+            name = ID_COLUMN,
+            updatable = false,
+            unique = true,
+            nullable = false
+    )
+    @NotNull(message = "Role id must not be empty.")
+    private Long id;
 
-    COACH(3,
-          Set.of(
-                  Permission.CREATE_WORKOUT,
-          Permission.DELETE_WORKOUT,
-          Permission.FETCH_WORKOUTS,
-          Permission.SELECT_WORKOUT,
-          Permission.RENAME_WORKOUT,
-          Permission.ADD_EXERCISE,
-          Permission.DELETE_EXERCISE
-          )
-    );
+    @Column(
+            name = AUTHORITY_COLUMN,
+            unique = true,
+            nullable = false,
+            updatable = false
+    )
+    @NotNull(message = "Authority must not be empty.")
+    private String authority;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "role_permissions_junction",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "permission_id")
+    )
+    private Set<Permission> permissions = new HashSet<>();
 
-    private final Integer roleId;
-    private final Set<Permission> permissions;
+//    @Override
+//    public String getAuthority() {
+//        return "ROLE_" + this.authority.toUpperCase();
+//    }
 }
-
