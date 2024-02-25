@@ -1,53 +1,50 @@
 package com.koleff.kare.models.entity;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.Set;
 
-import static com.koleff.kare.models.entity.Role.TABLE_NAME;
-
-@Entity
-@Table(name = TABLE_NAME)
 @AllArgsConstructor
-@RequiredArgsConstructor
-public @Data class Role implements GrantedAuthority {
+public enum Role {
 
-    public static final String TABLE_NAME = "role_table";
-    public static final String ID_COLUMN = "role_id";
-    public static final String AUTHORITY_COLUMN = "authority";
+    USER(1,
+            Set.of(
+                    Permission.CREATE_WORKOUT,
+                    Permission.DELETE_WORKOUT,
+                    Permission.FETCH_WORKOUTS,
+                    Permission.SELECT_WORKOUT,
+                    Permission.RENAME_WORKOUT,
+                    Permission.ADD_EXERCISE,
+                    Permission.DELETE_EXERCISE
+            )
+    ),
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(
-            name = ID_COLUMN,
-            nullable = false,
-            unique = true,
-            updatable = false
-    )
-    @NotNull(message = "Role id must not be empty.")
-    private Integer roleId;
+    ADMIN(2,
+            Set.of(
+                    Permission.CREATE_WORKOUT,
+                    Permission.DELETE_WORKOUT,
+                    Permission.FETCH_WORKOUTS,
+                    Permission.SELECT_WORKOUT,
+                    Permission.RENAME_WORKOUT,
+                    Permission.ADD_EXERCISE,
+                    Permission.DELETE_EXERCISE
+            )
+    ),
 
-    @Column(name = AUTHORITY_COLUMN,
-            nullable = false,
-            unique = false,
-            updatable = true
-    )
-    @NotNull(message = "Authority must not be empty.")
-    private String authority;
+    COACH(3,
+          Set.of(
+                  Permission.CREATE_WORKOUT,
+          Permission.DELETE_WORKOUT,
+          Permission.FETCH_WORKOUTS,
+          Permission.SELECT_WORKOUT,
+          Permission.RENAME_WORKOUT,
+          Permission.ADD_EXERCISE,
+          Permission.DELETE_EXERCISE
+          )
+    );
 
-    public Role(String authority) {
-        this.authority = authority;
-    }
+
+    private final Integer roleId;
+    private final Set<Permission> permissions;
 }
 
-//TODO: migrate roles to enums with permission lists...
