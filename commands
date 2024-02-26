@@ -1,0 +1,2 @@
+psql -U postgres -h 34.122.54.112
+gcloud sql connect postgres-instance     --user=postgres
