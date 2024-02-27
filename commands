@@ -1,2 +1,5 @@
 psql -U postgres -h 34.122.54.112
 gcloud sql connect postgres-instance     --user=postgres
+docker run --net=host -p 9090:8080 -e PORT=8080 084d383979de4a63bd31c38639b799762b5b51221f4eba8599784cdf7863bee1
+docker container ps --filter publish=5432
+netstat -aon | findstr 5432 
