@@ -20,5 +20,5 @@ RUN mvn clean package -DskipTests
 ENV PORT=8080
 EXPOSE 8080
 
-COPY target/kare-0.0.1-SNAPSHOT.jar  kare-0.0.1-SNAPSHOT.jar
-ENTRYPOINT ["sh", "-c", "java -jar /kare-0.0.1-SNAPSHOT.jar --server.port=${PORT}"]
+#COPY target/kare-0.0.1-SNAPSHOT.jar  kare-0.0.1-SNAPSHOT.jar
+ENTRYPOINT java -jar /kare-0.0.1-SNAPSHOT.jar --server.port=${PORT}
