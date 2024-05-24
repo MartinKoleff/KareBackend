@@ -13,25 +13,22 @@ import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
 @Entity
 @Table(name = TABLE_NAME)
 @RequiredArgsConstructor
-public @Data class Exercise {
-    public static final String TABLE_NAME = "exercise_table";
-    public static final String ID_COLUMN = "exercise_id";
+public @Data class ExerciseDetails {
+    public static final String TABLE_NAME = "exercise_details_table";
+    public static final String ID_COLUMN = "exercise_details_id";
     public static final String WORKOUT_ID_COLUMN = "workout_id";
-    public static final String WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN = "workout_details_id_fk";
     public static final String NAME_COLUMN = "name";
+    public static final String DESCRIPTION_COLUMN = "description";
     public static final String MUSCLE_GROUP_ID_COLUMN = "muscle_group_id_column";
     public static final String MACHINE_TYPE_ID_COLUMN = "machine_type_id_column";
     public static final String SNAPSHOT_COLUMN = "snapshot_column";
+    public static final String VIDEO_URL_COLUMN = "video_url_column";
+    public static final String EXERCISE_ID_FOREIGN_KEY_COLUMN = "exercise_id_fk";
 
     @Id
-    @SequenceGenerator(
-            name = "exercise_generator",
-            sequenceName = "exercise_sequence",
-            allocationSize = 1
-    )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
-            generator = "exercise_generator"
+            generator = "exercise_generator" //Use same generator as exercise -> same IDs
     )
     @Column(
             name = ID_COLUMN,
@@ -39,7 +36,7 @@ public @Data class Exercise {
             unique = true,
             nullable = false
     )
-    private Long exerciseId;
+    private Long exerciseDetailsId;
 
     @Column(
             name = WORKOUT_ID_COLUMN,
@@ -58,6 +55,15 @@ public @Data class Exercise {
     )
     @NotNull(message = "Name must not be empty.")
     private String name;
+
+    @Column(
+            name = DESCRIPTION_COLUMN,
+            updatable = true,
+            unique = false,
+            nullable = false
+    )
+    @NotNull(message = "Description must not be empty.")
+    private String description;
 
     @Column(
             name = MUSCLE_GROUP_ID_COLUMN,
@@ -86,22 +92,25 @@ public @Data class Exercise {
     @NotNull(message = "Snapshot must not be empty.")
     private String snapshot;
 
-    @ManyToOne
+    @Column(
+            name = VIDEO_URL_COLUMN,
+            updatable = true,
+            unique = false,
+            nullable = false
+    )
+    @NotNull(message = "Video url must not be empty.")
+    private String videoUrl;
+
+    @OneToOne
     @JoinColumn(
             name = ID_COLUMN,
-            referencedColumnName = WorkoutDetails.ID_COLUMN,
+            referencedColumnName = Exercise.ID_COLUMN,
             nullable = false,
             insertable = false,
             updatable = false,
             foreignKey = @ForeignKey(
-                    name = WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN
+                    name = EXERCISE_ID_FOREIGN_KEY_COLUMN
             )
     )
-    private WorkoutDetails workoutDetails;
-
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ExerciseSet> sets;
-
-    @OneToOne(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ExerciseDetails exerciseDetails;
+    private Exercise exercise;
 }
