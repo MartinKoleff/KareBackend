@@ -27,7 +27,7 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
     }
 
     public ExerciseSetDto getSetById(UUID setId) {
-        return exerciseSetRepository.findById(setId)
+        return exerciseSetRepository.findByExerciseSetId(setId)
                 .map(exerciseSetMapper::toDto)
                 .orElseThrow(() -> new NoSuchElementException(""));
     }
@@ -65,6 +65,6 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
     }
 
     public void deleteSetById(UUID setId) {
-        exerciseSetRepository.deleteById(setId);
+        exerciseSetRepository.deleteByExerciseSetId(setId);
     }
 }

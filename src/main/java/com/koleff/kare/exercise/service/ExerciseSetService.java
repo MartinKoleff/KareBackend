@@ -8,10 +8,10 @@ import java.util.UUID;
 
 public interface ExerciseSetService {
 
-    ExerciseSetDto getSetById(UUID setId);
+    ExerciseSetDto getSetById(UUID exerciseSetId);
     ExerciseSetDto saveExerciseSet(ExerciseSetDto exerciseSet);
     List<ExerciseSetDto> saveAllExerciseSets(List<ExerciseSetDto> exerciseSets);
     void updateExerciseSet(ExerciseSetDto exerciseSet);
     void deleteExerciseSet(ExerciseSetDto exerciseSet);
-    void deleteSetById(UUID setId);
+    void deleteSetById(UUID exerciseSetId);
 }

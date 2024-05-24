@@ -1,8 +1,8 @@
 package com.koleff.kare.exercise.models.response;
 
-import com.koleff.kare.exercise.models.entity.Exercise;
+import com.koleff.kare.exercise.models.dto.ExerciseDto;
 
 import java.util.List;
 
-public record ExerciseListResponse(List<Exercise> exercises) {
+public record ExerciseListResponse(List<ExerciseDto> exercises) {
 }
