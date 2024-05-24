@@ -11,6 +11,7 @@ public interface ExerciseService {
     List<ExerciseDto> getCatalogExercises(Integer muscleGroupId);
     List<ExerciseDto> getAllCatalogExercises();
     List<ExerciseDto> getAllExercises();
+    ExerciseDto getExercise(Long exerciseId, Long workoutId);
     ExerciseDto saveExercise(ExerciseDto exercise);
     ExerciseDto updateExercise(ExerciseDto exercise);
     void deleteExercise(ExerciseDto exercise);

@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Service
@@ -42,6 +43,16 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .filter(exercise -> !exercise.getWorkoutId().equals(Constants.CATALOG_WORKOUT_ID))
                 .map(exerciseMapper::toDto)
                 .toList();
+    }
+
+    @Override
+    public ExerciseDto getExercise(Long exerciseId, Long workoutId) {
+        return exerciseRepository.findByExerciseIdAndWorkoutId(exerciseId, workoutId)
+                .map(exerciseMapper::toDto)
+                .orElseThrow(() -> new NoSuchElementException(
+                                String.format("No exercise found with exerciseId %d and workoutId %d", exerciseId, workoutId)
+                        )
+                );
     }
 
     public List<ExerciseDto> getAllCatalogExercises() {
