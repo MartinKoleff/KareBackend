@@ -1,9 +1,7 @@
-package com.koleff.kare.auth.models.entity;
+package com.koleff.kare.exercise.models.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Getter

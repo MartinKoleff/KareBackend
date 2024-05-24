@@ -3,7 +3,7 @@ package com.koleff.kare.auth.controller;
 import com.koleff.kare.auth.models.dto.RegistrationDTO;
 import com.koleff.kare.auth.models.entity.User;
 import com.koleff.kare.auth.service.AuthenticationServiceImpl;
-import com.koleff.kare.auth.models.dto.AuthenticationResponse;
+import com.koleff.kare.auth.models.response.AuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,10 +1,9 @@
-package com.koleff.kare.auth.models.entity;
+package com.koleff.kare.workout.models.entity;
 
+import com.koleff.kare.exercise.models.entity.Exercise;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

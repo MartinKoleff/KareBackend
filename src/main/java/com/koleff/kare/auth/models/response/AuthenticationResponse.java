@@ -1,4 +1,4 @@
-package com.koleff.kare.auth.models.dto;
+package com.koleff.kare.auth.models.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.koleff.kare.auth.models.entity.User;
@@ -7,11 +7,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AuthenticationResponse {
+public @Data class AuthenticationResponse {
 
     @JsonProperty("user")
     private User user;
