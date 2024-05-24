@@ -15,6 +15,7 @@ public interface WorkoutRepository extends JpaRepository<Workout, Long> {
     @Query("SELECT w FROM Workout w ORDER BY w.workoutId")
     List<Workout> getWorkoutsOrderedById();
 
+    @Query("SELECT w FROM Workout w WHERE w.isFavorite = true")
     List<Workout> getWorkoutsByIsFavorite();
 
     Workout getWorkoutByWorkoutId(Long workoutId);
