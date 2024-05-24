@@ -1,5 +1,6 @@
 package com.koleff.kare.exercise.service;
 
+import com.koleff.kare.common.Constants;
 import com.koleff.kare.exercise.models.entity.Exercise;
 import com.koleff.kare.exercise.models.entity.ExerciseSet;
 import com.koleff.kare.exercise.repository.ExerciseRepository;
@@ -13,9 +14,6 @@ import java.util.UUID;
 
 @Service
 public class ExerciseService {
-
-    private static final Long CATALOG_WORKOUT_ID = 777L;
-
     private final ExerciseRepository exerciseRepository;
 
     private final ExerciseSetRepository exerciseSetRepository;
@@ -30,18 +28,18 @@ public class ExerciseService {
     }
 
     public List<Exercise> getCatalogExercises(Integer muscleGroupId) {
-        return exerciseRepository.findByWorkoutIdAndMuscleGroupId(CATALOG_WORKOUT_ID, muscleGroupId);
+        return exerciseRepository.findByWorkoutIdAndMuscleGroupId(Constants.CATALOG_WORKOUT_ID, muscleGroupId);
     }
 
     public List<Exercise> getAllExercises() {
         return exerciseRepository.findAll()
                 .stream()
-                .filter(exercise -> !exercise.getWorkoutId().equals(CATALOG_WORKOUT_ID))
+                .filter(exercise -> !exercise.getWorkoutId().equals(Constants.CATALOG_WORKOUT_ID))
                 .toList();
     }
 
     public List<Exercise> getAllCatalogExercises() {
-        return exerciseRepository.findByWorkoutId(CATALOG_WORKOUT_ID);
+        return exerciseRepository.findByWorkoutId(Constants.CATALOG_WORKOUT_ID);
     }
 
     public Exercise saveExercise(Exercise exercise) {
