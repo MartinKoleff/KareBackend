@@ -64,8 +64,8 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role_junction",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            joinColumns = @JoinColumn(name = ID_COLUMN),
+            inverseJoinColumns = @JoinColumn(name = Role.ID_COLUMN)
     )
     private Set<Role> authorities;
 

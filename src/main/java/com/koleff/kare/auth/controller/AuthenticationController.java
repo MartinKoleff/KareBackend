@@ -1,6 +1,6 @@
 package com.koleff.kare.auth.controller;
 
-import com.koleff.kare.auth.models.dto.AuthenticationResponse;
+import com.koleff.kare.auth.models.response.AuthenticationResponse;
 import com.koleff.kare.auth.models.dto.RegistrationDTO;
 import com.koleff.kare.auth.models.entity.User;
 import org.springframework.web.bind.annotation.RequestBody;

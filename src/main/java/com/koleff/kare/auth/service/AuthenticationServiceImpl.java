@@ -8,7 +8,7 @@ import com.koleff.kare.auth.models.entity.Role;
 import com.koleff.kare.auth.models.entity.User;
 import com.koleff.kare.auth.repository.RoleRepository;
 import com.koleff.kare.auth.repository.UserRepository;
-import com.koleff.kare.auth.models.dto.AuthenticationResponse;
+import com.koleff.kare.auth.models.response.AuthenticationResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
