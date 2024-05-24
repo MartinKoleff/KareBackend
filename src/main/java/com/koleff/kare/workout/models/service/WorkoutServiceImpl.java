@@ -1,11 +1,13 @@
 package com.koleff.kare.workout.models.service;
 
+import com.koleff.kare.common.Constants;
 import com.koleff.kare.workout.mapper.WorkoutMapper;
 import com.koleff.kare.workout.models.dto.WorkoutDto;
 import com.koleff.kare.workout.models.entity.Workout;
 import com.koleff.kare.workout.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.yaml.snakeyaml.scanner.Constant;
 
 import java.util.List;
 
@@ -27,6 +29,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     public List<WorkoutDto> getWorkoutsOrderedById() {
         return workoutRepository.getWorkoutsOrderedById()
                 .stream()
+                .filter(workout -> !workout.getWorkoutId().equals(Constants.CATALOG_WORKOUT_ID))
                 .map(workoutMapper::toDto)
                 .toList();
     }
@@ -34,6 +37,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     public List<WorkoutDto> getWorkoutsByIsFavorite() {
         return workoutRepository.getWorkoutsByIsFavorite()
                 .stream()
+                .filter(workout -> !workout.getWorkoutId().equals(Constants.CATALOG_WORKOUT_ID))
                 .map(workoutMapper::toDto)
                 .toList();
     }
