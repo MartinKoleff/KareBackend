@@ -28,17 +28,6 @@ public enum MuscleGroup {
     private final String muscleGroupName;
     private final String description;
 
-    public static List<MuscleGroup> getSupportedMuscleGroups() {
-        return List.of(
-                CHEST,
-                BACK,
-                TRICEPS,
-                BICEPS,
-                SHOULDERS,
-                LEGS
-        );
-    }
-
     public static MuscleGroup fromId(int id) {
         for (MuscleGroup muscleGroup : values()) {
             if (muscleGroup.getMuscleGroupId() == id) {
@@ -46,16 +35,5 @@ public enum MuscleGroup {
             }
         }
         return NONE;
-    }
-
-    public static String toDescription(MuscleGroup muscleGroup) {
-        return switch (muscleGroup) {
-            case CHEST, BACK, TRICEPS, BICEPS, SHOULDERS, LEGS, ABS, CARDIO, FULL_BODY ->
-                    muscleGroup.getMuscleGroupName();
-            case UPPER_LOWER_BODY -> "Upper Body ⚬ Lower Body";
-            case ARMS -> "Triceps ⚬ Biceps ⚬ Forearms";
-            case PUSH_PULL_LEGS -> muscleGroup.getMuscleGroupName().replace(" ", " ⚬ ");
-            default -> "";
-        };
     }
 }
