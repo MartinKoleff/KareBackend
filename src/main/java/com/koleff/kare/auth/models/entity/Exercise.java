@@ -82,8 +82,7 @@ public @Data class Exercise {
 //    @JoinColumn(name = "workout_details_id", nullable = false)
 //    private WorkoutDetails workoutDetails;
 //
-//    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<ExerciseSet> sets;
-//
-//    // Getters and Setters
+
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseSet> sets;
 }
