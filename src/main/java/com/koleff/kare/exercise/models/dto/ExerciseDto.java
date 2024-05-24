@@ -4,6 +4,7 @@ import java.util.List;
 
 public record ExerciseDto(
     Long id,
+    Long workoutId,
     String name,
     Integer muscleGroupId,
     Integer machineTypeId,

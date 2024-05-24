@@ -45,7 +45,7 @@ public @Data class ExerciseSet {
             nullable = false
     )
     @NotNull(message = "Exercise id must not be empty.")
-    private Integer exerciseId;
+    private Long exerciseId;
 
     @Column(
             name = WORKOUT_ID_COLUMN,
@@ -54,7 +54,7 @@ public @Data class ExerciseSet {
             nullable = false
     )
     @NotNull(message = "Workout id must not be empty.")
-    private Integer workoutId;
+    private Long workoutId;
 
     @Column(
             name = NUMBER_COLUMN,

@@ -16,6 +16,7 @@ import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
 public @Data class Exercise {
     public static final String TABLE_NAME = "exercise_table";
     public static final String ID_COLUMN = "exercise_id";
+    public static final String WORKOUT_ID_COLUMN = "workout_id";
     public static final String WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN = "workout_details_id_fk";
     public static final String NAME_COLUMN = "name";
     public static final String MUSCLE_GROUP_ID_COLUMN = "muscle_group_id_column";
@@ -39,6 +40,15 @@ public @Data class Exercise {
             nullable = false
     )
     private Long exerciseId;
+
+    @Column(
+            name = WORKOUT_ID_COLUMN,
+            updatable = false,
+            unique = true,
+            nullable = false
+    )
+    @NotNull(message = "Workout id must not be empty.")
+    private Long workoutId;
 
     @Column(
             name = NAME_COLUMN,
