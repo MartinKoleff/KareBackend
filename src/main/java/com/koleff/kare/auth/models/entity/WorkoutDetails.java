@@ -95,4 +95,11 @@ public @Data class WorkoutDetails {
             orphanRemoval = true
     )
     private List<Exercise> exercises;
+
+    @OneToOne(
+            mappedBy = "workoutDetails",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private WorkoutConfiguration configuration;
 }
