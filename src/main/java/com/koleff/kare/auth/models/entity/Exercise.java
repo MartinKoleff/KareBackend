@@ -78,10 +78,18 @@ public @Data class Exercise {
     @NotNull(message = "Snapshot must not be empty.")
     private String snapshot;
 
-//    @ManyToOne
-//    @JoinColumn(name = "workout_details_id", nullable = false)
-//    private WorkoutDetails workoutDetails;
-//
+    @ManyToOne
+    @JoinColumn(
+            name = ID_COLUMN,
+            referencedColumnName = WorkoutDetails.ID_COLUMN,
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN
+            )
+    )
+    private WorkoutDetails workoutDetails;
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ExerciseSet> sets;
