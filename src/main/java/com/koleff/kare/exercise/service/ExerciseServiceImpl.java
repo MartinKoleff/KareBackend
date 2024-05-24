@@ -29,6 +29,7 @@ public class ExerciseServiceImpl implements ExerciseService {
         this.exerciseMapper = exerciseMapper;
     }
 
+    @Override
     public List<ExerciseDto> getCatalogExercises(Integer muscleGroupId) {
         return exerciseRepository
                 .findByWorkoutIdAndMuscleGroupId(Constants.CATALOG_WORKOUT_ID, muscleGroupId)
@@ -37,6 +38,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .toList();
     }
 
+    @Override
     public List<ExerciseDto> getAllExercises() {
         return exerciseRepository.findAll()
                 .stream()
@@ -55,6 +57,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 );
     }
 
+    @Override
     public List<ExerciseDto> getAllCatalogExercises() {
         return exerciseRepository.findByWorkoutId(Constants.CATALOG_WORKOUT_ID)
                 .stream()
@@ -62,6 +65,7 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .toList();
     }
 
+    @Override
     public ExerciseDto saveExercise(ExerciseDto exercise) {
         Exercise dbEntry = exerciseRepository.save(
                 exerciseMapper.toEntity(exercise)
@@ -76,6 +80,8 @@ public class ExerciseServiceImpl implements ExerciseService {
         return saveExercise(exercise);
     }
 
+
+    @Override
     public void deleteExercise(ExerciseDto exercise) {
         exerciseRepository.delete(
                 exerciseMapper.toEntity(exercise)

@@ -26,6 +26,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         this.workoutMapper = workoutMapper;
     }
 
+    @Override
     public List<WorkoutDto> getWorkoutsOrderedById() {
         return workoutRepository.getWorkoutsOrderedById()
                 .stream()
@@ -34,6 +35,7 @@ public class WorkoutServiceImpl implements WorkoutService {
                 .toList();
     }
 
+    @Override
     public List<WorkoutDto> getWorkoutsByIsFavorite() {
         return workoutRepository.getWorkoutsByIsFavorite()
                 .stream()
@@ -42,12 +44,14 @@ public class WorkoutServiceImpl implements WorkoutService {
                 .toList();
     }
 
+    @Override
     public WorkoutDto getWorkout(Long workoutId) {
         return workoutMapper.toDto(
                 workoutRepository.getWorkoutByWorkoutId(workoutId)
         );
     }
 
+    @Override
     public WorkoutDto saveWorkout(WorkoutDto workout) {
         Workout dbEntry = workoutRepository.save(
                 workoutMapper.toEntity(workout)
@@ -56,6 +60,7 @@ public class WorkoutServiceImpl implements WorkoutService {
         return workoutMapper.toDto(dbEntry);
     }
 
+    @Override
     public void saveAllWorkouts(List<WorkoutDto> workouts) {
         List<Workout> dbEntries = workoutRepository.saveAll(
                 workouts.stream()
@@ -64,20 +69,26 @@ public class WorkoutServiceImpl implements WorkoutService {
         );
     }
 
+    @Override
     public void deleteWorkout(Long workoutId) {
         workoutRepository.deleteWorkout(workoutId);
     }
 
 
     //TODO: refactor...
+    @Override
     public void updateWorkout(WorkoutDto workout) {
         saveWorkout(workout);
     }
 
+
+    @Override
     public void favoriteWorkoutById(Long workoutId) {
         workoutRepository.favoriteWorkoutById(workoutId);
     }
 
+
+    @Override
     public void unfavoriteWorkoutById(Long workoutId) {
         workoutRepository.unfavoriteWorkoutById(workoutId);
     }

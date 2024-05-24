@@ -1,79 +1,26 @@
 package com.koleff.kare.workout.models.service;
 
-import com.koleff.kare.workout.mapper.WorkoutDetailsMapper;
 import com.koleff.kare.workout.models.dto.WorkoutDetailsDto;
-import com.koleff.kare.workout.models.entity.WorkoutDetails;
-import com.koleff.kare.workout.repository.WorkoutDetailsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class WorkoutDetailsService {
+public interface WorkoutDetailsService {
 
-    private final WorkoutDetailsRepository workoutDetailsRepository;
-    private final WorkoutDetailsMapper workoutDetailsMapper;
+    List<WorkoutDetailsDto> getWorkoutDetailsOrderedById();
 
-    @Autowired
-    public WorkoutDetailsService(
-            WorkoutDetailsRepository workoutDetailsRepository,
-            WorkoutDetailsMapper workoutDetailsMapper
-    ) {
-        this.workoutDetailsRepository = workoutDetailsRepository;
-        this.workoutDetailsMapper = workoutDetailsMapper;
-    }
+    List<WorkoutDetailsDto> getWorkoutDetailsByIsFavorite();
 
-    public List<WorkoutDetailsDto> getWorkoutDetailsOrderedById() {
-        return workoutDetailsRepository.getWorkoutDetailsOrderedById()
-                .stream()
-                .map(workoutDetailsMapper::toDto)
-                .toList();
-    }
+    WorkoutDetailsDto getWorkoutDetails(Long workoutId);
 
-    public List<WorkoutDetailsDto> getWorkoutDetailsByIsFavorite() {
-        return workoutDetailsRepository.getWorkoutDetailsByIsFavorite()
-                .stream()
-                .map(workoutDetailsMapper::toDto)
-                .toList();
-    }
+    WorkoutDetailsDto saveWorkoutDetails(WorkoutDetailsDto workoutDetails);
 
-    public WorkoutDetailsDto getWorkoutDetails(Long workoutId) {
-        return workoutDetailsMapper.toDto(
-                workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId)
-        );
-    }
+    void saveAllWorkoutDetails(List<WorkoutDetailsDto> workoutDetailsList);
 
-    public WorkoutDetailsDto saveWorkoutDetails(WorkoutDetailsDto workoutDetails) {
-        WorkoutDetails dbEntry = workoutDetailsRepository.save(
-                workoutDetailsMapper.toEntity(workoutDetails)
-        );
+    void deleteWorkoutDetails(Long workoutId);
 
-        return workoutDetailsMapper.toDto(dbEntry);
-    }
+    void updateWorkoutDetails(WorkoutDetailsDto workoutDetails);
 
-    public void saveAllWorkoutDetails(List<WorkoutDetailsDto> workoutDetailsList) {
-        List<WorkoutDetails> dbEntries = workoutDetailsRepository.saveAll(
-                workoutDetailsList.stream()
-                        .map(workoutDetailsMapper::toEntity)
-                        .toList()
-        );
-    }
+    void favoriteWorkoutDetailsById(Long workoutId);
 
-    public void deleteWorkoutDetails(Long workoutId) {
-        workoutDetailsRepository.deleteWorkoutDetails(workoutId);
-    }
-
-    //TODO: refactor...
-    public void updateWorkoutDetails(WorkoutDetailsDto workoutDetails) {
-        saveWorkoutDetails(workoutDetails);
-    }
-
-    public void favoriteWorkoutDetailsById(Long workoutId) {
-        workoutDetailsRepository.favoriteWorkoutDetailsById(workoutId);
-    }
-
-    public void unfavoriteWorkoutDetailsById(Long workoutId) {
-        workoutDetailsRepository.unfavoriteWorkoutDetailsById(workoutId);
-    }
+    void unfavoriteWorkoutDetailsById(Long workoutId);
 }
