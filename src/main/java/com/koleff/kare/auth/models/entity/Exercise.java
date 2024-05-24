@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.util.List;
+
 import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
 
 @Entity
@@ -16,20 +18,29 @@ import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
 public @Data class Exercise {
     public static final String TABLE_NAME = "exercise_table";
     public static final String ID_COLUMN = "exercise_id";
+    public static final String WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN = "workout_details_id_fk";
     public static final String NAME_COLUMN = "name";
     public static final String MUSCLE_GROUP_ID_COLUMN = "muscle_group_id_column";
     public static final String MACHINE_TYPE_ID_COLUMN = "machine_type_id_column";
     public static final String SNAPSHOT_COLUMN = "snapshot_column";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "exercise_generator",
+            sequenceName = "exercise_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "exercise_generator"
+    )
     @Column(
             name = ID_COLUMN,
             updatable = false,
             unique = true,
             nullable = false
     )
-    private Long id;
+    private Long exerciseId;
 
     @Column(
             name = NAME_COLUMN,
@@ -37,6 +48,7 @@ public @Data class Exercise {
             unique = false,
             nullable = false
     )
+    @NotNull(message = "Name must not be empty.")
     private String name;
 
     @Column(
@@ -45,6 +57,7 @@ public @Data class Exercise {
             unique = false,
             nullable = false
     )
+    @NotNull(message = "Muscle group id must not be empty.")
     private Integer muscleGroupId;
 
     @Column(
@@ -53,6 +66,7 @@ public @Data class Exercise {
             unique = false,
             nullable = false
     )
+    @NotNull(message = "Machine type id must not be empty.")
     private Integer machineTypeId;
 
     @Column(
@@ -61,6 +75,7 @@ public @Data class Exercise {
             unique = false,
             nullable = false
     )
+    @NotNull(message = "Snapshot must not be empty.")
     private String snapshot;
 
 //    @ManyToOne
