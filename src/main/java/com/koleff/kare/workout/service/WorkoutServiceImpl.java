@@ -70,7 +70,7 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     @Override
     public void deleteWorkout(Long workoutId) {
-        workoutRepository.deleteWorkout(workoutId);
+        workoutRepository.deleteWorkoutByWorkoutId(workoutId);
     }
 
 

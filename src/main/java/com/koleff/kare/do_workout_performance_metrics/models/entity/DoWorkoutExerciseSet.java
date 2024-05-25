@@ -43,7 +43,7 @@ public @Data class DoWorkoutExerciseSet {
             nullable = false
     )
     @NotNull(message = "Do workout performance metrics id must not be empty")
-    private Long workoutPerformanceMetricsId;
+    private Long doWorkoutPerformanceMetricsId;
 
     @Column(
             name = WORKOUT_ID_COLUMN,
