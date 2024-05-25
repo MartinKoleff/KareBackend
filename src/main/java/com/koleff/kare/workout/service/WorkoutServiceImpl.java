@@ -81,13 +81,13 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public void favoriteWorkoutById(Long workoutId) {
+    public void favoriteWorkout(Long workoutId) {
         workoutRepository.favoriteWorkoutById(workoutId);
     }
 
 
     @Override
-    public void unfavoriteWorkoutById(Long workoutId) {
+    public void unfavoriteWorkout(Long workoutId) {
         workoutRepository.unfavoriteWorkoutById(workoutId);
     }
 }

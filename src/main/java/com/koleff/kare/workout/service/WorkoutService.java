@@ -18,7 +18,7 @@ public interface WorkoutService {
 
     void updateWorkout(WorkoutDto workout);
 
-    void favoriteWorkoutById(Long workoutId);
+    void favoriteWorkout(Long workoutId);
 
-    void unfavoriteWorkoutById(Long workoutId);
+    void unfavoriteWorkout(Long workoutId);
 }
