@@ -7,9 +7,7 @@ import java.util.List;
 public interface WorkoutService {
 
     List<WorkoutDto> getWorkoutsOrderedById();
-
-    List<WorkoutDto> getWorkoutsByIsFavorite();
-
+    List<WorkoutDto> getFavoriteWorkouts();
     WorkoutDto getWorkout(Long workoutId);
 
     WorkoutDto saveWorkout(WorkoutDto workout);

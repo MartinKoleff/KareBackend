@@ -36,7 +36,7 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public List<WorkoutDto> getWorkoutsByIsFavorite() {
+    public List<WorkoutDto> getFavoriteWorkouts() {
         return workoutRepository.getWorkoutsByIsFavorite()
                 .stream()
                 .filter(workout -> !workout.getWorkoutId().equals(Constants.CATALOG_WORKOUT_ID))
@@ -80,7 +80,6 @@ public class WorkoutServiceImpl implements WorkoutService {
     public void updateWorkout(WorkoutDto workout) {
         saveWorkout(workout);
     }
-
 
     @Override
     public void favoriteWorkoutById(Long workoutId) {
