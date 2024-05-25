@@ -1,9 +1,8 @@
-package com.koleff.kare.workout.models.service;
+package com.koleff.kare.workout.service;
 
 import com.koleff.kare.exercise.mapper.ExerciseMapper;
 import com.koleff.kare.exercise.mapper.ExerciseSetMapper;
 import com.koleff.kare.exercise.models.dto.ExerciseDto;
-import com.koleff.kare.exercise.models.dto.ExerciseSetDto;
 import com.koleff.kare.exercise.models.entity.Exercise;
 import com.koleff.kare.exercise.models.entity.ExerciseSet;
 import com.koleff.kare.exercise.repository.ExerciseRepository;

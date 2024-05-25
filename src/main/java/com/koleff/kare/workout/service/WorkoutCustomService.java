@@ -1,4 +1,4 @@
-package com.koleff.kare.workout.models.service;
+package com.koleff.kare.workout.service;
 
 import com.koleff.kare.exercise.models.dto.ExerciseDto;
 import com.koleff.kare.exercise.models.dto.ExerciseSetDto;

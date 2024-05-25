@@ -1,4 +1,4 @@
-package com.koleff.kare.workout.models.service;
+package com.koleff.kare.workout.service;
 
 import com.koleff.kare.common.Constants;
 import com.koleff.kare.workout.mapper.WorkoutMapper;
@@ -7,7 +7,6 @@ import com.koleff.kare.workout.models.entity.Workout;
 import com.koleff.kare.workout.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.yaml.snakeyaml.scanner.Constant;
 
 import java.util.List;
 

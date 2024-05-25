@@ -1,4 +1,4 @@
-package com.koleff.kare.workout.models.service;
+package com.koleff.kare.workout.service;
 
 import com.koleff.kare.workout.mapper.WorkoutConfigurationMapper;
 import com.koleff.kare.workout.models.dto.WorkoutConfigurationDto;
