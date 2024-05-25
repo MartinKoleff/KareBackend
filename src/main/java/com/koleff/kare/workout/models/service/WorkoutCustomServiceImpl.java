@@ -8,12 +8,14 @@ import com.koleff.kare.exercise.models.entity.Exercise;
 import com.koleff.kare.exercise.models.entity.ExerciseSet;
 import com.koleff.kare.exercise.repository.ExerciseRepository;
 import com.koleff.kare.exercise.repository.ExerciseSetRepository;
-import com.koleff.kare.exercise.service.ExerciseService;
 import com.koleff.kare.workout.mapper.WorkoutDetailsMapper;
 import com.koleff.kare.workout.mapper.WorkoutMapper;
 import com.koleff.kare.workout.models.dto.WorkoutDetailsDto;
 import com.koleff.kare.workout.models.dto.WorkoutDto;
+import com.koleff.kare.workout.models.entity.Workout;
+import com.koleff.kare.workout.models.entity.WorkoutConfiguration;
 import com.koleff.kare.workout.models.entity.WorkoutDetails;
+import com.koleff.kare.workout.repository.WorkoutConfigurationRepository;
 import com.koleff.kare.workout.repository.WorkoutDetailsRepository;
 import com.koleff.kare.workout.repository.WorkoutRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     private final ExerciseSetMapper exerciseSetMapper;
     private final ExerciseRepository exerciseRepository;
     private final ExerciseSetRepository exerciseSetRepository;
+    private final WorkoutConfigurationRepository workoutConfigurationRepository;
 
     @Autowired
     public WorkoutCustomServiceImpl(
@@ -43,7 +46,8 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
             ExerciseMapper exerciseMapper,
             ExerciseSetMapper exerciseSetMapper,
             ExerciseRepository exerciseRepository,
-            ExerciseSetRepository exerciseSetRepository
+            ExerciseSetRepository exerciseSetRepository,
+            WorkoutConfigurationRepository workoutConfigurationRepository
     ) {
         this.workoutRepository = workoutRepository;
         this.workoutMapper = workoutMapper;
@@ -53,21 +57,109 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
         this.exerciseSetMapper = exerciseSetMapper;
         this.exerciseRepository = exerciseRepository;
         this.exerciseSetRepository = exerciseSetRepository;
+        this.workoutConfigurationRepository = workoutConfigurationRepository;
     }
 
     @Override
     public WorkoutDto createNewWorkout() {
-        return null;
+        Workout workout = new Workout();
+
+        Long workoutId = workoutRepository.save(workout).getWorkoutId();
+        String workoutName = "Workout " + workoutId;
+
+        //Update workout
+        workout.setWorkoutId(workoutId);
+        workout.setName(workoutName);
+
+        workoutRepository.updateWorkout(
+                workout.getName(),
+                workout.getMuscleGroupId(),
+                workout.getSnapshot(),
+                workout.getTotalExercises(),
+                workout.getIsFavorite(),
+                workout.getWorkoutId()
+        );
+
+        //Create workout details
+        WorkoutDetails workoutDetails = new WorkoutDetails();
+        workoutDetails.setWorkoutDetailsId(workoutId);
+        workoutDetails.setName(workoutName);
+
+        Long workoutDetailsId = workoutDetailsRepository.save(workoutDetails).getWorkoutDetailsId();
+
+        //Create workout configuration
+        WorkoutConfiguration workoutConfiguration = new WorkoutConfiguration();
+        workoutConfiguration.setWorkoutDetailsId(workoutId);
+
+        workoutConfigurationRepository.save(workoutConfiguration);
+
+        return workoutMapper.toDto(workout);
     }
 
     @Override
-    public WorkoutDto createCustomWorkout(WorkoutDto workout) {
-        return null;
+    public WorkoutDto createCustomWorkout(WorkoutDto workoutDto) {
+        Workout updatedWorkout = workoutMapper.toEntity(workoutDto);
+
+        Long workoutId = workoutRepository.save(updatedWorkout).getWorkoutId();
+        updatedWorkout.setWorkoutId(workoutId);
+
+        //Update workout
+        workoutRepository.updateWorkout(
+                updatedWorkout.getName(),
+                updatedWorkout.getMuscleGroupId(),
+                updatedWorkout.getSnapshot(),
+                updatedWorkout.getTotalExercises(),
+                updatedWorkout.getIsFavorite(),
+                updatedWorkout.getWorkoutId()
+        );
+
+        //Create workout details
+        WorkoutDetails workoutDetails = new WorkoutDetails(); //TODO: create constructor...
+        workoutDetails.setWorkoutDetailsId(workoutId);
+        workoutDetails.setName(workoutDto.name());
+        workoutDetails.setDescription("");
+        workoutDetails.setIsFavorite(workoutDto.isFavorite());
+
+        //TODO: check if workout details entry exists in DB...
+        Long workoutDetailsId = workoutDetailsRepository.save(workoutDetails).getWorkoutDetailsId();
+
+        //Create workout configuration
+        WorkoutConfiguration workoutConfiguration = new WorkoutConfiguration();
+        workoutConfiguration.setWorkoutDetailsId(workoutId);
+
+        workoutConfigurationRepository.save(workoutConfiguration);
+
+        return workoutMapper.toDto(updatedWorkout);
     }
 
     @Override
     public WorkoutDetailsDto createCustomWorkoutDetails(WorkoutDetailsDto workoutDetailsDto) {
-        return null;
+        WorkoutDetails updatedWorkoutDetails = workoutDetailsMapper.toEntity(workoutDetailsDto);
+
+        Long workoutDetailsId = workoutDetailsRepository.save(updatedWorkoutDetails).getWorkoutDetailsId();
+        updatedWorkoutDetails.setWorkoutDetailsId(workoutDetailsId);
+
+        //Create workout
+        Workout workout = new Workout(); //TODO: create constructor...
+        workout.setWorkoutId(workoutDetailsId);
+        workout.setName(updatedWorkoutDetails.getName());
+        workout.setTotalExercises(updatedWorkoutDetails.getExercises().size());
+        workout.setIsFavorite(updatedWorkoutDetails.getIsFavorite());
+        workout.setSnapshot("");
+
+        //TODO: check if workout entry exists in DB...
+        Long workoutId = workoutRepository.save(workout).getWorkoutId();
+
+        //Save exercises
+        workoutDetailsDto.exercises().forEach(this::insertExerciseAndSets);
+
+        //Create workout configuration
+        WorkoutConfiguration workoutConfiguration = new WorkoutConfiguration();
+        workoutConfiguration.setWorkoutDetailsId(workoutDetailsId);
+
+        workoutConfigurationRepository.save(workoutConfiguration);
+
+        return workoutDetailsMapper.toDto(updatedWorkoutDetails);
     }
 
     @Override
@@ -78,7 +170,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
             //TODO: throw KareError.INVALID_EXERCISE
         }
 
-        insertExerciseAndSets(exercise, exercise.sets());
+        insertExerciseAndSets(exercise);
 
         //Validation
         WorkoutDetails workoutDetails = workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
@@ -102,7 +194,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
         }
 
         for (ExerciseDto exercise : exercises) {
-            insertExerciseAndSets(exercise, exercise.sets());
+            insertExerciseAndSets(exercise);
         }
 
         //Validation
@@ -135,7 +227,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
         }catch (NoSuchElementException e){
 
             //Exercise not found -> new entry...
-            insertExerciseAndSets(exercise, exercise.sets());
+            insertExerciseAndSets(exercise);
         }
 
         //Validation
@@ -171,7 +263,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
             }catch (NoSuchElementException e){
 
                 //Exercise not found -> new entry...
-                insertExerciseAndSets(exercise, exercise.sets());
+                insertExerciseAndSets(exercise);
             }
         }
 
@@ -238,13 +330,13 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     /**
      * Helper functions
      */
-    private void insertExerciseAndSets(ExerciseDto exercise, List<ExerciseSetDto> sets) {
+    private void insertExerciseAndSets(ExerciseDto exercise) {
         Exercise updatedExercise = exerciseMapper.toEntity(exercise);
 
         //Updates workoutId just in case it is different from provided one
 //        updatedExercise.setWorkoutId(workoutId);
 
-        List<ExerciseSet> updatedSets = sets
+        List<ExerciseSet> updatedSets = exercise.sets()
                 .stream()
                 .map(exerciseSetMapper::toEntity)
                 .toList();
@@ -260,8 +352,16 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     private void updateExercise(ExerciseDto dbEntry, ExerciseDto exercise){
+
         //Update exercise
-//        exerciseRepository.updateExercise(exercise);
+        exerciseRepository.updateExercise(
+                exercise.name(),
+                exercise.muscleGroupId(),
+                exercise.machineTypeId(),
+                exercise.snapshot(),
+                exercise.id(),
+                exercise.workoutId()
+        );
 
         //Delete old sets
         dbEntry.sets()
