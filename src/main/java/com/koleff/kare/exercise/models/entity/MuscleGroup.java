@@ -3,8 +3,8 @@ package com.koleff.kare.exercise.models.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum MuscleGroup {
     CHEST(1, "Chest", ""),
     BACK(2, "Back", ""),

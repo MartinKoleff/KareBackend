@@ -26,12 +26,14 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
         this.exerciseSetMapper = exerciseSetMapper;
     }
 
+    @Override
     public ExerciseSetDto getSetById(UUID setId) {
         return exerciseSetRepository.findByExerciseSetId(setId)
                 .map(exerciseSetMapper::toDto)
                 .orElseThrow(() -> new NoSuchElementException(""));
     }
 
+    @Override
     public ExerciseSetDto saveExerciseSet(ExerciseSetDto exerciseSet) {
         ExerciseSet dbEntry = exerciseSetRepository.save(
                 exerciseSetMapper.toEntity(exerciseSet)
@@ -40,6 +42,7 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
         return exerciseSetMapper.toDto(dbEntry);
     }
 
+    @Override
     public List<ExerciseSetDto> saveAllExerciseSets(List<ExerciseSetDto> exerciseSets) {
         List<ExerciseSet> dbEntries = exerciseSetRepository.saveAll(
                 exerciseSets.stream()
@@ -52,18 +55,24 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
                 .toList();
     }
 
+
+    @Override
     public void updateExerciseSet(ExerciseSetDto exerciseSet) {
         exerciseSetRepository.save(
                 exerciseSetMapper.toEntity(exerciseSet)
         );
     }
 
+
+    @Override
     public void deleteExerciseSet(ExerciseSetDto exerciseSet) {
         exerciseSetRepository.delete(
                 exerciseSetMapper.toEntity(exerciseSet)
         );
     }
 
+
+    @Override
     public void deleteSetById(UUID setId) {
         exerciseSetRepository.deleteByExerciseSetId(setId);
     }

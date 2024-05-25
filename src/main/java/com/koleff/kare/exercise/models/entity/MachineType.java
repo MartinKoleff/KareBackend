@@ -3,8 +3,8 @@ package com.koleff.kare.exercise.models.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum MachineType {
     DUMBBELL(1),
     BARBELL(2),

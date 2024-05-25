@@ -3,14 +3,17 @@ package com.koleff.kare.workout.models.entity;
 import com.koleff.kare.exercise.models.entity.Exercise;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = WorkoutDetails.TABLE_NAME)
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public @Data class WorkoutDetails {
     public static final String TABLE_NAME = "workout_details_table";
     public static final String ID_COLUMN = "workout_details_id";
