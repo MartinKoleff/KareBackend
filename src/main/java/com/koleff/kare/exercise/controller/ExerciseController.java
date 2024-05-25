@@ -46,28 +46,44 @@ public class ExerciseController {
     public ExerciseListResponse getCatalogExercises(@RequestBody FetchExercisesByMuscleGroupRequest request) {
         List<ExerciseDto> exercises = exerciseService.getCatalogExercises(request.muscleGroupId());
 
-        return new ExerciseListResponse(exercises);
+        return new ExerciseListResponse(
+                exercises,
+                true,
+                null
+        );
     }
 
     @PostMapping("/getcatalogexercise")
     public ExerciseResponse getCatalogExercise(@RequestBody FetchExerciseRequest request) {
         ExerciseDto exercise = exerciseService.getExercise(request.exerciseId(), Constants.CATALOG_WORKOUT_ID);
 
-        return new ExerciseResponse(exercise);
+        return new ExerciseResponse(
+                exercise,
+                true,
+                null
+        );
     }
 
     @PostMapping("/getexercise")
     public ExerciseResponse getExercise(@RequestBody FetchExerciseRequest request) {
         ExerciseDto exercise = exerciseService.getExercise(request.exerciseId(), request.workoutId());
 
-        return new ExerciseResponse(exercise);
+        return new ExerciseResponse(
+                exercise,
+                true,
+                null
+        );
     }
 
     @PostMapping("/getexercisedetails")
     public ExerciseDetailsResponse getExerciseDetails(@RequestBody FetchExerciseRequest request) {
         ExerciseDetailsDto exerciseDetails = exerciseDetailsService.getExerciseDetails(request.exerciseId(), request.workoutId());
 
-        return new ExerciseDetailsResponse(exerciseDetails);
+        return new ExerciseDetailsResponse(
+                exerciseDetails,
+                true,
+                null
+        );
     }
 
 //    //Use only in local datasource in client...
