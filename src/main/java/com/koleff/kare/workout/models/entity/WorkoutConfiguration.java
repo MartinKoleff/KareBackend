@@ -2,12 +2,15 @@ package com.koleff.kare.workout.models.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Entity
 @Table(name = WorkoutConfiguration.TABLE_NAME)
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public @Data class WorkoutConfiguration {
     public static final String TABLE_NAME = "workout_configuration_table";
     public static final String ID_COLUMN = "workout_configuration_id";

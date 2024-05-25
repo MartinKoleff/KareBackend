@@ -2,14 +2,17 @@ package com.koleff.kare.exercise.models.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = ExerciseSet.TABLE_NAME)
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public @Data class ExerciseSet {
     public static final String TABLE_NAME = "exercise_set_table";
     public static final String ID_COLUMN = "set_id";
