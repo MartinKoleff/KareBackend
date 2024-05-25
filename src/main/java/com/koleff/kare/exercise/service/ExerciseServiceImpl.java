@@ -51,7 +51,7 @@ public class ExerciseServiceImpl implements ExerciseService {
     public ExerciseDto getExercise(Long exerciseId, Long workoutId) {
         return exerciseRepository.findByExerciseIdAndWorkoutId(exerciseId, workoutId)
                 .map(exerciseMapper::toDto)
-                .orElseThrow(() -> new NoSuchElementException(
+                .orElseThrow(() -> new NoSuchElementException( //TODO: throw KareError.EXERCISE_NOT_FOUND
                                 String.format("No exercise found with exerciseId %d and workoutId %d", exerciseId, workoutId)
                         )
                 );
