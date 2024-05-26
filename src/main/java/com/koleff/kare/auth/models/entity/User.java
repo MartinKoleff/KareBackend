@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
 
@@ -34,7 +35,7 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
             nullable = false
     )
     @NotNull(message = "User id must not be empty.")
-    private String id;
+    private UUID id;
 
     @Column(
             name = USERNAME_COLUMN,

@@ -45,13 +45,13 @@ public class JWTTokenService {
     }
 
     public String generateAccessToken(User user) {
-        JwtClaimsSet claims = buildClaimsSet(user.getId(), accessTokenExpirationTime, user);
+        JwtClaimsSet claims = buildClaimsSet(user.getId().toString(), accessTokenExpirationTime, user);
 
         return generateToken(user, claims, false);
     }
 
     public String generateRefreshToken(User user) {
-        JwtClaimsSet claims = buildClaimsSet(user.getId(), refreshTokenExpirationTime, user);
+        JwtClaimsSet claims = buildClaimsSet(user.getId().toString(), refreshTokenExpirationTime, user);
 
         return generateToken(user, claims, true);
     }
@@ -107,7 +107,7 @@ public class JWTTokenService {
     }
 
     public void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId().toString());
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(token -> {

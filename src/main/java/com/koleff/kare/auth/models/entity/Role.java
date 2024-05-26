@@ -46,8 +46,8 @@ public class Role implements GrantedAuthority {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "role_permissions_junction",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id")
+            joinColumns = @JoinColumn(name = Role.ID_COLUMN),
+            inverseJoinColumns = @JoinColumn(name = Permission.ID_COLUMN)
     )
     private Set<Permission> permissions = new HashSet<>();
 

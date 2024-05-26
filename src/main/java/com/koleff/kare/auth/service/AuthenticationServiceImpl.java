@@ -59,7 +59,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         authorities.add(userRole);
 
         //Create user and save in DB.
-        User user = new User(UUID.randomUUID().toString(), username, encodedPassword, email, authorities);
+        User user = new User(UUID.randomUUID(), username, encodedPassword, email, authorities);
         logger.info(String.format("User created! User: %s", user));
 
         return userRepository.save(user);
