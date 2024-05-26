@@ -1,5 +1,6 @@
 package com.koleff.kare.exercise.service;
 
+import com.koleff.kare.common.error.exceptions.ExerciseNotFoundException;
 import com.koleff.kare.exercise.mapper.ExerciseDetailsMapper;
 import com.koleff.kare.exercise.models.dto.ExerciseDetailsDto;
 import com.koleff.kare.exercise.models.entity.ExerciseDetails;
@@ -25,12 +26,9 @@ public class ExerciseDetailsServiceImpl implements ExerciseDetailsService {
     }
 
     @Override
-    public ExerciseDetailsDto getExerciseDetails(Long exerciseId, Long workoutId) {
+    public ExerciseDetailsDto getExerciseDetails(Long exerciseId, Long workoutId) throws ExerciseNotFoundException {
         ExerciseDetails exerciseDetails = exerciseDetailsRepository.findByExerciseDetailsIdAndWorkoutId(exerciseId, workoutId)
-                .orElseThrow(() -> new NoSuchElementException(
-                                "No exercise details found with exerciseId " + exerciseId + " and workoutId " + workoutId
-                        )
-                );
+                .orElseThrow(ExerciseNotFoundException::new);
 
 
         return exerciseDetailsMapper.toDto(exerciseDetails);
@@ -51,12 +49,9 @@ public class ExerciseDetailsServiceImpl implements ExerciseDetailsService {
     }
 
     @Override
-    public void deleteExerciseDetails(Long exerciseId, Long workoutId) {
+    public void deleteExerciseDetails(Long exerciseId, Long workoutId) throws ExerciseNotFoundException {
         ExerciseDetails exerciseDetails = exerciseDetailsRepository.findByExerciseDetailsIdAndWorkoutId(exerciseId, workoutId)
-                .orElseThrow(() -> new NoSuchElementException(
-                                "No exercise details found with exerciseId " + exerciseId + " and workoutId " + workoutId
-                        )
-                );
+                .orElseThrow(ExerciseNotFoundException::new);
 
         exerciseDetailsRepository.delete(exerciseDetails);
     }

@@ -1,6 +1,8 @@
 package com.koleff.kare.exercise.service;
 
 import com.koleff.kare.common.Constants;
+import com.koleff.kare.common.error.exceptions.ExerciseNotFoundException;
+import com.koleff.kare.common.error.exceptions.WorkoutNotFoundException;
 import com.koleff.kare.exercise.mapper.ExerciseMapper;
 import com.koleff.kare.exercise.models.dto.ExerciseDto;
 import com.koleff.kare.exercise.models.entity.Exercise;
@@ -30,12 +32,16 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public List<ExerciseDto> getCatalogExercises(Integer muscleGroupId) {
-        return exerciseRepository
+    public List<ExerciseDto> getCatalogExercises(Integer muscleGroupId) throws ExerciseNotFoundException {
+        List<ExerciseDto> catalogExercises = exerciseRepository
                 .findByWorkoutIdAndMuscleGroupId(Constants.CATALOG_WORKOUT_ID, muscleGroupId)
                 .stream()
                 .map(exerciseMapper::toDto)
                 .toList();
+
+        if(catalogExercises.isEmpty()) throw new ExerciseNotFoundException();
+
+        return catalogExercises;
     }
 
     @Override
@@ -48,17 +54,14 @@ public class ExerciseServiceImpl implements ExerciseService {
     }
 
     @Override
-    public ExerciseDto getExercise(Long exerciseId, Long workoutId) {
+    public ExerciseDto getExercise(Long exerciseId, Long workoutId) throws ExerciseNotFoundException {
         return exerciseRepository.findByExerciseIdAndWorkoutId(exerciseId, workoutId)
                 .map(exerciseMapper::toDto)
-                .orElseThrow(() -> new NoSuchElementException( //TODO: throw KareError.EXERCISE_NOT_FOUND
-                                String.format("No exercise found with exerciseId %d and workoutId %d", exerciseId, workoutId)
-                        )
-                );
+                .orElseThrow(ExerciseNotFoundException::new);
     }
 
     @Override
-    public List<ExerciseDto> getAllCatalogExercises() {
+    public List<ExerciseDto> getAllCatalogExercises() { // throws WorkoutNotFoundException
         return exerciseRepository.findByWorkoutId(Constants.CATALOG_WORKOUT_ID)
                 .stream()
                 .map(exerciseMapper::toDto)
