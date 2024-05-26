@@ -10,10 +10,9 @@ import static com.koleff.kare.auth.models.entity.Permission.TABLE_NAME;
 
 @Entity
 @Table(name = TABLE_NAME)
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Permission {
+public @Data class Permission {
 
     public static final String TABLE_NAME = "permission_table";
     public static final String ID_COLUMN = "permission_id";

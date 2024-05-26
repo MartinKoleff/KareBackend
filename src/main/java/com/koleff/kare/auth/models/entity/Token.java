@@ -1,6 +1,6 @@
 package com.koleff.kare.auth.models.entity;
 
-import com.koleff.kare.exercise.models.entity.Exercise;
+import com.koleff.kare.workout.models.entity.Workout;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,16 +9,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.util.UUID;
 
-import static com.koleff.kare.auth.models.entity.Token.TABLE_NAME;
-
-@Data
+@Entity
+@Table(name = Token.TABLE_NAME)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = TABLE_NAME)
-public class Token {
+public @Data class Token {
 
     public static final String TABLE_NAME = "token_table";
     public static final String ID_COLUMN = "token_id";

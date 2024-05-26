@@ -14,10 +14,9 @@ import static com.koleff.kare.auth.models.entity.Role.TABLE_NAME;
 
 @Entity
 @Table(name = TABLE_NAME)
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Role implements GrantedAuthority {
+public @Data class Role implements GrantedAuthority {
 
     public static final String TABLE_NAME = "roles_table";
     public static final String ID_COLUMN = "role_id";
