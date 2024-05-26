@@ -7,7 +7,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * used in client as local datasource only!
+ */
 @Service
+@Deprecated(forRemoval = true)
 public class ExerciseConfigureServiceImpl implements ExerciseConfigureService{
 
     @Override

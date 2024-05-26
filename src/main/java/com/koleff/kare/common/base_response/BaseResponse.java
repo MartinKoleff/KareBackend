@@ -1,12 +1,11 @@
 package com.koleff.kare.common.base_response;
 
+import com.koleff.kare.common.error.kare_error.KareError;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 public @Data class BaseResponse {
-    private boolean isSuccessful;
-    private KareError error;
+    private boolean isSuccessful = true;
+    private KareError error = KareError.OK;
 }

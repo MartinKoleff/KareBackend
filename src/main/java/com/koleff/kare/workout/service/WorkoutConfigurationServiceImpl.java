@@ -1,5 +1,6 @@
 package com.koleff.kare.workout.service;
 
+import com.koleff.kare.common.error.exceptions.WorkoutConfigurationNotFoundException;
 import com.koleff.kare.workout.mapper.WorkoutConfigurationMapper;
 import com.koleff.kare.workout.models.dto.WorkoutConfigurationDto;
 import com.koleff.kare.workout.models.entity.WorkoutConfiguration;
@@ -23,10 +24,12 @@ public class WorkoutConfigurationServiceImpl implements WorkoutConfigurationServ
     }
 
     @Override
-    public WorkoutConfigurationDto getWorkoutConfiguration(Long workoutId) {
-        return workoutConfigurationMapper.toDto(
-                workoutConfigurationRepository.findByWorkoutDetailsId(workoutId)
-        );
+    public WorkoutConfigurationDto getWorkoutConfiguration(Long workoutId) throws WorkoutConfigurationNotFoundException {
+        WorkoutConfiguration workoutConfiguration = workoutConfigurationRepository.findByWorkoutDetailsId(workoutId);
+
+        if(workoutConfiguration == null) throw new WorkoutConfigurationNotFoundException();
+
+        return workoutConfigurationMapper.toDto(workoutConfiguration);
     }
 
     @Override

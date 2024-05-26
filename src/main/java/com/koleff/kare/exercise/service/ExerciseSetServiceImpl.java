@@ -1,5 +1,6 @@
 package com.koleff.kare.exercise.service;
 
+import com.koleff.kare.common.error.exceptions.ExerciseSetNotFoundException;
 import com.koleff.kare.exercise.mapper.ExerciseSetMapper;
 import com.koleff.kare.exercise.models.dto.ExerciseSetDto;
 import com.koleff.kare.exercise.models.entity.ExerciseSet;
@@ -27,10 +28,10 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
     }
 
     @Override
-    public ExerciseSetDto getSetById(UUID setId) {
+    public ExerciseSetDto getSetById(UUID setId) throws ExerciseSetNotFoundException {
         return exerciseSetRepository.findByExerciseSetId(setId)
                 .map(exerciseSetMapper::toDto)
-                .orElseThrow(() -> new NoSuchElementException(""));
+                .orElseThrow(ExerciseSetNotFoundException::new);
     }
 
     @Override

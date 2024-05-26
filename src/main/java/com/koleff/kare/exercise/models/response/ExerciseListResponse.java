@@ -1,7 +1,7 @@
 package com.koleff.kare.exercise.models.response;
 
 import com.koleff.kare.common.base_response.BaseResponse;
-import com.koleff.kare.common.base_response.KareError;
+import com.koleff.kare.common.error.kare_error.KareError;
 import com.koleff.kare.exercise.models.dto.ExerciseDto;
 
 import java.util.List;

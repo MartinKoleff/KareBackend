@@ -1,5 +1,6 @@
 package com.koleff.kare.do_workout_performance_metrics.services;
 
+import com.koleff.kare.common.error.exceptions.DoWorkoutPerformanceMetricsNotFoundException;
 import com.koleff.kare.do_workout_performance_metrics.mapper.DoWorkoutExerciseSetMapper;
 import com.koleff.kare.do_workout_performance_metrics.mapper.DoWorkoutPerformanceMetricsMapper;
 import com.koleff.kare.do_workout_performance_metrics.models.dto.DoWorkoutPerformanceMetricsDto;
@@ -47,8 +48,10 @@ public class DoWorkoutPerformanceMetricsServiceImpl implements DoWorkoutPerforma
     }
 
     @Override
-    public DoWorkoutPerformanceMetricsDto getDoWorkoutPerformanceMetricsById(Long id) {
+    public DoWorkoutPerformanceMetricsDto getDoWorkoutPerformanceMetricsById(Long id) throws DoWorkoutPerformanceMetricsNotFoundException {
         DoWorkoutPerformanceMetrics performanceMetrics = doWorkoutPerformanceMetricsRepository.findWorkoutPerformanceMetricsById(id);
+
+        if(performanceMetrics == null) throw new DoWorkoutPerformanceMetricsNotFoundException();
 
         return doWorkoutPerformanceMetricsMapper.toDto(performanceMetrics);
     }

@@ -1,6 +1,7 @@
 package com.koleff.kare.workout.service;
 
 import com.koleff.kare.common.Constants;
+import com.koleff.kare.common.error.exceptions.WorkoutNotFoundException;
 import com.koleff.kare.workout.mapper.WorkoutMapper;
 import com.koleff.kare.workout.models.dto.WorkoutDto;
 import com.koleff.kare.workout.models.entity.Workout;
@@ -44,10 +45,12 @@ public class WorkoutServiceImpl implements WorkoutService {
     }
 
     @Override
-    public WorkoutDto getWorkout(Long workoutId) {
-        return workoutMapper.toDto(
-                workoutRepository.getWorkoutByWorkoutId(workoutId)
-        );
+    public WorkoutDto getWorkout(Long workoutId) throws WorkoutNotFoundException {
+        Workout workout = workoutRepository.getWorkoutByWorkoutId(workoutId);
+
+        if (workout == null) throw new WorkoutNotFoundException();
+
+        return workoutMapper.toDto(workout);
     }
 
     @Override
@@ -76,18 +79,28 @@ public class WorkoutServiceImpl implements WorkoutService {
 
     //TODO: refactor...
     @Override
-    public void updateWorkout(WorkoutDto workout) {
+    public void updateWorkout(WorkoutDto workout) { //throws WorkoutNotFoundException
         saveWorkout(workout);
     }
 
     @Override
-    public void favoriteWorkout(Long workoutId) {
+    public void favoriteWorkout(Long workoutId) throws WorkoutNotFoundException {
+
+        //Validation
+        Workout workout = workoutRepository.getWorkoutByWorkoutId(workoutId);
+        if (workout == null) throw new WorkoutNotFoundException();
+
         workoutRepository.favoriteWorkoutById(workoutId);
     }
 
 
     @Override
-    public void unfavoriteWorkout(Long workoutId) {
+    public void unfavoriteWorkout(Long workoutId) throws WorkoutNotFoundException {
+
+        //Validation
+        Workout workout = workoutRepository.getWorkoutByWorkoutId(workoutId);
+        if (workout == null) throw new WorkoutNotFoundException();
+
         workoutRepository.unfavoriteWorkoutById(workoutId);
     }
 }

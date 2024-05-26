@@ -1,7 +1,7 @@
 package com.koleff.kare.do_workout_performance_metrics.models.response;
 
 import com.koleff.kare.common.base_response.BaseResponse;
-import com.koleff.kare.common.base_response.KareError;
+import com.koleff.kare.common.error.kare_error.KareError;
 import com.koleff.kare.do_workout_performance_metrics.models.dto.DoWorkoutPerformanceMetricsDto;
 
 import java.util.List;
