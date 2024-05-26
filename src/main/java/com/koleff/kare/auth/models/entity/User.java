@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -27,15 +28,7 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
     public static final String PASSWORD_COLUMN = "password";
 
     @Id
-    @SequenceGenerator(
-            name = "user_generator",
-            sequenceName = "user_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "user_generator"
-    )
+    @UuidGenerator
     @Column(
             name = ID_COLUMN,
             updatable = false,

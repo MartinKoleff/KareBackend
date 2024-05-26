@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -24,15 +25,7 @@ public @Data class ExerciseSet {
     public static final String EXERCISE_ID_FOREIGN_KEY_COLUMN = "exercise_id_fk";
 
     @Id
-    @SequenceGenerator(
-            name = "exercise_set_generator",
-            sequenceName = "exercise_set_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.IDENTITY,
-            generator = "exercise_set_generator"
-    )
+    @UuidGenerator
     @Column(
             name = ID_COLUMN,
             updatable = false,

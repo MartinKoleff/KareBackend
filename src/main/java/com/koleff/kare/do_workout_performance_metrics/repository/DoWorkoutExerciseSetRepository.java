@@ -34,18 +34,18 @@ public interface DoWorkoutExerciseSetRepository extends JpaRepository<DoWorkoutE
     @Query("DELETE FROM DoWorkoutExerciseSet s WHERE s.workoutId = :workoutId")
     void deleteByWorkoutId(Long workoutId);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE DoWorkoutExerciseSet s SET s.doWorkoutPerformanceMetricsId = :workoutPerformanceMetricsId, s.workoutId = :workoutId, s.exerciseId = :exerciseId, s.templateSetId = :templateSetId, s.reps = :reps, s.weight = :weight, s.isDone = :isDone, s.time = :time, s.date = :date WHERE s.instanceId = :instanceId")
-    void updateSet(UUID instanceId,
-                   Long doWorkoutPerformanceMetricsId,
-                   Long workoutId,
-                   Long exerciseId,
-                   UUID templateSetId,
-                   Integer reps,
-                   Float weight,
-                   Boolean isDone,
-                   ExerciseTime time,
-                   Date date
-    );
+//    @Modifying
+//    @Transactional
+//    @Query("UPDATE DoWorkoutExerciseSet s SET s.doWorkoutPerformanceMetricsId = :workoutPerformanceMetricsId, s.workoutId = :workoutId, s.exerciseId = :exerciseId, s.templateSetId = :templateSetId, s.reps = :reps, s.weight = :weight, s.isDone = :isDone, s.time = :time, s.date = :date WHERE s.instanceId = :instanceId")
+//    void updateSet(String instanceId,
+//                   Long doWorkoutPerformanceMetricsId,
+//                   Long workoutId,
+//                   Long exerciseId,
+//                   String templateSetId,
+//                   Integer reps,
+//                   Float weight,
+//                   Boolean isDone,
+//                   ExerciseTime time,
+//                   Date date
+//    );
 }
