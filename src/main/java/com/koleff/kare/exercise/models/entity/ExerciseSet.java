@@ -39,7 +39,7 @@ public @Data class ExerciseSet {
             unique = true,
             nullable = false
     )
-    private UUID exerciseSetId;
+    private String exerciseSetId;
 
     @Column(
             name = EXERCISE_ID_COLUMN,

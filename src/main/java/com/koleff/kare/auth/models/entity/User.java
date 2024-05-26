@@ -43,7 +43,7 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
             nullable = false
     )
     @NotNull(message = "User id must not be empty.")
-    private UUID id;
+    private String id;
 
     @Column(
             name = USERNAME_COLUMN,

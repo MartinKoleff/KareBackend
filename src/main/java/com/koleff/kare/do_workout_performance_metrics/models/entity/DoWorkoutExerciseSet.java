@@ -38,7 +38,7 @@ public @Data class DoWorkoutExerciseSet {
             nullable = false
     )
     @NotNull(message = "Do workout exercise set instance id must not be empty")
-    private UUID instanceId;
+    private String instanceId;
 
     @Column(
             name = DO_WORKOUT_PERFORMANCE_METRICS_ID_COLUMN,
@@ -74,7 +74,7 @@ public @Data class DoWorkoutExerciseSet {
             nullable = false
     )
     @NotNull(message = "Template set id must not be empty")
-    private UUID templateSetId;
+    private String templateSetId;
 
     @Column(
             name = REPS_COLUMN,

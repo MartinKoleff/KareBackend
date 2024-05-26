@@ -40,7 +40,7 @@ public class Token {
             nullable = false
     )
     @NotNull(message = "Token id must not be empty.")
-    public Integer id;
+    public Long id;
 
     @Column(
             name = USER_ID_COLUMN,
@@ -49,7 +49,7 @@ public class Token {
             nullable = false
     )
     @NotNull(message = "User id must not be empty.")
-    public UUID userId;
+    public String userId;
 
     @Column(
             name = TOKEN_COLUMN,

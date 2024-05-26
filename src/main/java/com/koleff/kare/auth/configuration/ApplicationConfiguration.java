@@ -78,7 +78,7 @@ public class ApplicationConfiguration {
             roleRepository.save(coachRole);
 
             //Create admin user
-            User admin = new User(UUID.randomUUID(),
+            User admin = new User(UUID.randomUUID().toString(),
                     "admin",
                     passwordEncoder.encode("password"),
                     "admin@test.com",
