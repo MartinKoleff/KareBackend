@@ -1,5 +1,6 @@
 package com.koleff.kare.workout.service;
 
+import com.koleff.kare.common.error.exceptions.WorkoutDetailsNotFoundException;
 import com.koleff.kare.workout.mapper.WorkoutDetailsMapper;
 import com.koleff.kare.workout.models.dto.WorkoutDetailsDto;
 import com.koleff.kare.workout.models.entity.WorkoutDetails;
@@ -41,10 +42,12 @@ public class WorkoutDetailsServiceImpl implements WorkoutDetailsService {
     }
 
     @Override
-    public WorkoutDetailsDto getWorkoutDetails(Long workoutId) {
-        return workoutDetailsMapper.toDto(
-                workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId)
-        );
+    public WorkoutDetailsDto getWorkoutDetails(Long workoutId) throws WorkoutDetailsNotFoundException {
+        WorkoutDetails workoutDetails =  workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
+
+        if(workoutDetails == null) throw new WorkoutDetailsNotFoundException();
+
+        return workoutDetailsMapper.toDto(workoutDetails);
     }
 
     @Override
@@ -72,17 +75,27 @@ public class WorkoutDetailsServiceImpl implements WorkoutDetailsService {
 
     //TODO: refactor...
     @Override
-    public void updateWorkoutDetails(WorkoutDetailsDto workoutDetails) {
+    public void updateWorkoutDetails(WorkoutDetailsDto workoutDetails) { //throws WorkoutDetailsNotFoundException
         saveWorkoutDetails(workoutDetails);
     }
 
     @Override
-    public void favoriteWorkoutDetailsById(Long workoutId) {
+    public void favoriteWorkoutDetailsById(Long workoutId) throws WorkoutDetailsNotFoundException{
+
+        //Validation
+        WorkoutDetails workoutDetails =  workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
+        if(workoutDetails == null) throw new WorkoutDetailsNotFoundException();
+
         workoutDetailsRepository.favoriteWorkoutDetailsById(workoutId);
     }
 
     @Override
-    public void unfavoriteWorkoutDetailsById(Long workoutId) {
+    public void unfavoriteWorkoutDetailsById(Long workoutId) throws WorkoutDetailsNotFoundException{
+
+        //Validation
+        WorkoutDetails workoutDetails =  workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
+        if(workoutDetails == null) throw new WorkoutDetailsNotFoundException();
+
         workoutDetailsRepository.unfavoriteWorkoutDetailsById(workoutId);
     }
 }

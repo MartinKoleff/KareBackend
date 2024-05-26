@@ -1,5 +1,8 @@
 package com.koleff.kare.workout.service;
 
+import com.koleff.kare.common.error.exceptions.ExerciseNotFoundException;
+import com.koleff.kare.common.error.exceptions.InvalidExerciseException;
+import com.koleff.kare.common.error.exceptions.WorkoutDetailsNotFoundException;
 import com.koleff.kare.exercise.mapper.ExerciseMapper;
 import com.koleff.kare.exercise.mapper.ExerciseSetMapper;
 import com.koleff.kare.exercise.models.dto.ExerciseDto;
@@ -162,11 +165,11 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto addExercise(Long workoutId, ExerciseDto exercise) {
+    public WorkoutDetailsDto addExercise(Long workoutId, ExerciseDto exercise) throws InvalidExerciseException, WorkoutDetailsNotFoundException {
 
         //Validation
         if (exercise.workoutId() == -1 || !exercise.workoutId().equals(workoutId)) {
-            //TODO: throw KareError.INVALID_EXERCISE
+            throw new InvalidExerciseException();
         }
 
         insertExerciseAndSets(exercise);
@@ -174,7 +177,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
         //Validation
         WorkoutDetails workoutDetails = workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
         if (workoutDetails == null) {
-            //TODO: throw KareError.WORKOUT_DETAILS_NOT_FOUND
+            throw new WorkoutDetailsNotFoundException();
         }
 
         //After insert the relations will be updated in DB...
@@ -183,12 +186,12 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto addMultipleExercises(Long workoutId, List<ExerciseDto> exercises) {
+    public WorkoutDetailsDto addMultipleExercises(Long workoutId, List<ExerciseDto> exercises) throws InvalidExerciseException, WorkoutDetailsNotFoundException {
 
         //Validation
         for (ExerciseDto exercise : exercises) {
             if (!exercise.workoutId().equals(workoutId)) {
-                //TODO: throw KareError.INVALID_EXERCISE
+                throw new InvalidExerciseException();
             }
         }
 
@@ -199,7 +202,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
         //Validation
         WorkoutDetails workoutDetails = workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
         if (workoutDetails == null) {
-            //TODO: throw KareError.WORKOUT_DETAILS_NOT_FOUND
+            throw new WorkoutDetailsNotFoundException();
         }
 
         //After insert the relations will be updated in DB...
@@ -208,22 +211,20 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto submitExercise(Long workoutId, ExerciseDto exercise) {
+    public WorkoutDetailsDto submitExercise(Long workoutId, ExerciseDto exercise) throws InvalidExerciseException, WorkoutDetailsNotFoundException {
         //Validation
         if (exercise.workoutId() == -1 || !exercise.workoutId().equals(workoutId)) {
-            //TODO: throw KareError.INVALID_EXERCISE
+            throw new InvalidExerciseException();
         }
 
         try {
 
             //Entry in DB exists -> update
             Exercise dbEntry = exerciseRepository.findByExerciseIdAndWorkoutId(exercise.id(), exercise.workoutId())
-                    .orElseThrow(() -> new NoSuchElementException( //TODO: throw KareError.EXERCISE_NOT_FOUND
-                            String.format("No exercise found with exerciseId %d and workoutId %d", exercise.id(), exercise.workoutId())
-                    ));
+                    .orElseThrow(ExerciseNotFoundException::new);
 
             updateExercise(exerciseMapper.toDto(dbEntry), exercise);
-        }catch (NoSuchElementException e){
+        } catch (ExerciseNotFoundException e) {
 
             //Exercise not found -> new entry...
             insertExerciseAndSets(exercise);
@@ -232,7 +233,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
         //Validation
         WorkoutDetails workoutDetails = workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
         if (workoutDetails == null) {
-            //TODO: throw KareError.WORKOUT_DETAILS_NOT_FOUND
+            throw new WorkoutDetailsNotFoundException();
         }
 
         //After insert the relations will be updated in DB...
@@ -241,11 +242,11 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto submitMultipleExercises(Long workoutId, List<ExerciseDto> exercises) {
+    public WorkoutDetailsDto submitMultipleExercises(Long workoutId, List<ExerciseDto> exercises)  throws InvalidExerciseException, WorkoutDetailsNotFoundException {
         //Validation
         for (ExerciseDto exercise : exercises) {
             if (!exercise.workoutId().equals(workoutId)) {
-                //TODO: throw KareError.INVALID_EXERCISE
+                throw new InvalidExerciseException();
             }
         }
 
@@ -254,12 +255,10 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
 
                 //Entry in DB exists -> update
                 Exercise dbEntry = exerciseRepository.findByExerciseIdAndWorkoutId(exercise.id(), exercise.workoutId())
-                        .orElseThrow(() -> new NoSuchElementException( //TODO: throw KareError.EXERCISE_NOT_FOUND
-                                String.format("No exercise found with exerciseId %d and workoutId %d", exercise.id(), exercise.workoutId())
-                        ));
+                        .orElseThrow(ExerciseNotFoundException::new);
 
                 updateExercise(exerciseMapper.toDto(dbEntry), exercise);
-            }catch (NoSuchElementException e){
+            } catch (NoSuchElementException e) {
 
                 //Exercise not found -> new entry...
                 insertExerciseAndSets(exercise);
@@ -270,7 +269,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
         //Validation
         WorkoutDetails workoutDetails = workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
         if (workoutDetails == null) {
-            //TODO: throw KareError.WORKOUT_DETAILS_NOT_FOUND
+            throw new WorkoutDetailsNotFoundException();
         }
 
         //After insert the relations will be updated in DB...
@@ -279,14 +278,11 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto deleteExercise(Long workoutId, Long exerciseId) {
+    public WorkoutDetailsDto deleteExercise(Long workoutId, Long exerciseId) throws ExerciseNotFoundException, WorkoutDetailsNotFoundException{
 
         //If exercise is not found error will be thrown
         Exercise exercise = exerciseRepository.findByExerciseIdAndWorkoutId(exerciseId, workoutId)
-                .orElseThrow(() -> new NoSuchElementException( //TODO: throw KareError.EXERCISE_NOT_FOUND
-                                String.format("No exercise found with exerciseId %d and workoutId %d", exerciseId, workoutId)
-                        )
-                );
+                .orElseThrow(ExerciseNotFoundException::new);
 
         exerciseRepository.delete(exercise);
 
@@ -294,7 +290,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
 
         //Validation
         if (workoutDetails == null) {
-            //TODO: throw KareError.WORKOUT_DETAILS_NOT_FOUND
+            throw new WorkoutDetailsNotFoundException();
         }
 
         //After delete the relations will be updated in DB...
@@ -303,20 +299,18 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto deleteMultipleExercises(Long workoutId, List<Long> exerciseIds) {
+    public WorkoutDetailsDto deleteMultipleExercises(Long workoutId, List<Long> exerciseIds) throws ExerciseNotFoundException, WorkoutDetailsNotFoundException{
 
         //Validation
         WorkoutDetails workoutDetails = workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);
         if (workoutDetails == null) {
-            //TODO: throw KareError.WORKOUT_DETAILS_NOT_FOUND
+            throw new WorkoutDetailsNotFoundException();
         }
 
         for (Long exerciseId : exerciseIds) {
             Exercise exercise = exerciseRepository.findByExerciseIdAndWorkoutId(exerciseId, workoutId)
-                    .orElseThrow(() -> new NoSuchElementException( //TODO: throw KareError.EXERCISE_NOT_FOUND
-                                    String.format("No exercise found with exerciseId %d and workoutId %d", exerciseId, workoutId)
-                            )
-                    );
+                    .orElseThrow(ExerciseNotFoundException::new);
+
             exerciseRepository.delete(exercise);
         }
 
@@ -350,7 +344,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
 //        exerciseSetRepository.saveAll(sets);
     }
 
-    private void updateExercise(ExerciseDto dbEntry, ExerciseDto exercise){
+    private void updateExercise(ExerciseDto dbEntry, ExerciseDto exercise) {
 
         //Update exercise
         exerciseRepository.updateExercise(
@@ -364,9 +358,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
 
         //Delete old sets
         dbEntry.sets()
-                .forEach(
-                set -> exerciseSetRepository.deleteByExerciseSetId(set.id())
-        );
+                .forEach(set -> exerciseSetRepository.deleteByExerciseSetId(set.id()));
 
         //Add new sets
         exercise.sets()
