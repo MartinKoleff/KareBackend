@@ -9,6 +9,8 @@ import com.koleff.kare.auth.models.entity.User;
 import com.koleff.kare.auth.repository.RoleRepository;
 import com.koleff.kare.auth.repository.UserRepository;
 import com.koleff.kare.auth.models.response.AuthenticationResponse;
+import com.koleff.kare.common.error.exceptions.InvalidCredentialsException;
+import com.koleff.kare.common.error.exceptions.InvalidTokenException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public User registerUser(String username, String password, String email) { //TODO: add access and refresh token generation directly instead of having to login...
+    public User registerUser(String username, String password, String email) {
 
         //Encode the password
         String encodedPassword = passwordEncoder.encode(password);
@@ -64,7 +66,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public AuthenticationResponse loginUser(String username, String password) {
+    public AuthenticationResponse loginUser(String username, String password) throws InvalidCredentialsException {
 
         try {
             Authentication auth = authenticationManager.authenticate(
@@ -87,17 +89,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                     .user(user)
                     .build();
         } catch (AuthenticationException e) {
-
-            return AuthenticationResponse.builder()
-                    .accessToken("")
-                    .refreshToken("")
-                    .user(null)
-                    .build();
+            throw new InvalidCredentialsException();
         }
     }
 
     @Override
-    public AuthenticationResponse refreshToken(String refreshToken) {
+    public AuthenticationResponse refreshToken(String refreshToken) throws InvalidTokenException{
 
         //Find user from the token
         String userId = jwtTokenService.extractUserId(refreshToken);
@@ -121,9 +118,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         //Invalid token
-        return AuthenticationResponse.builder()
-                .refreshToken("")
-                .accessToken("")
-                .build();
+        throw new InvalidTokenException();
     }
 }

@@ -4,6 +4,8 @@ import com.koleff.kare.auth.models.entity.User;
 import com.koleff.kare.auth.models.entity.Token;
 import com.koleff.kare.auth.models.entity.TokenType;
 import com.koleff.kare.auth.repository.TokenRepository;
+import com.koleff.kare.common.error.exceptions.InvalidTokenException;
+import com.koleff.kare.common.error.exceptions.TokenExpiredException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,14 +136,22 @@ public class JWTTokenService {
         return jwt.getSubject(); //sub
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) throws NullPointerException {
+    public boolean validateToken(String token, UserDetails userDetails) throws InvalidTokenException {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+
+        if (username.equals(userDetails.getUsername()) && !isTokenExpired(token)) throw new InvalidTokenException();
+
+        return true;
     }
 
-    private boolean isTokenExpired(String token) throws NullPointerException {
+    private boolean isTokenExpired(String token) throws TokenExpiredException {
         Jwt jwt = jwtDecoder.decode(token);
-        return jwt.getExpiresAt().isBefore(Instant.now());
+
+        try {
+            return jwt.getExpiresAt().isBefore(Instant.now());
+        } catch (NullPointerException e) {
+            throw new TokenExpiredException();
+        }
     }
 }
 

@@ -29,6 +29,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info(String.format("Fetching user details for username %s.", username));
 
+        //TODO: throw InvalidTokenException?
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         String.format("User with username %s doesn't exist in the DB.", username)
