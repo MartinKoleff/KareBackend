@@ -8,8 +8,10 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = ExerciseSetMapper.class)
 public interface ExerciseMapper {
     @Mapping(source = "sets", target = "sets")
+    @Mapping(source = "exerciseId", target = "id")
     ExerciseDto toDto(Exercise exercise);
 
     @Mapping(source = "sets", target = "sets")
+    @Mapping(source = "id", target = "exerciseId")
     Exercise toEntity(ExerciseDto exerciseDto);
 }

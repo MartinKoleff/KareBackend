@@ -78,7 +78,7 @@ public @Data class WorkoutDetails {
     @NotNull(message = "Is favorite must not be empty")
     private Boolean isFavorite;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(
             name = ID_COLUMN,
             referencedColumnName = Workout.ID_COLUMN,

@@ -25,6 +25,6 @@ public record WorkoutDto(
         Boolean isFavorite,
 
         @JsonProperty("workout_details")
-        List<WorkoutDetailsDto> workoutDetails
+        WorkoutDetailsDto workoutDetails
 ) {
 }

@@ -85,10 +85,10 @@ public @Data class Workout {
     @NotNull(message = "Is favorite must not be empty")
     private Boolean isFavorite;
 
-    @OneToMany(
+    @OneToOne(
             mappedBy = "workout",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<WorkoutDetails> workoutDetails;
+    private WorkoutDetails workoutDetails;
 }
