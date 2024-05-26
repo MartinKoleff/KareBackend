@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.util.UUID;
 
@@ -24,22 +25,14 @@ public @Data class ExerciseSet {
     public static final String EXERCISE_ID_FOREIGN_KEY_COLUMN = "exercise_id_fk";
 
     @Id
-    @SequenceGenerator(
-            name = "exercise_set_generator",
-            sequenceName = "exercise_set_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.UUID,
-            generator = "exercise_set_generator"
-    )
+    @UuidGenerator
     @Column(
             name = ID_COLUMN,
             updatable = false,
             unique = true,
             nullable = false
     )
-    private UUID exerciseSetId;
+    private String exerciseSetId;
 
     @Column(
             name = EXERCISE_ID_COLUMN,
@@ -88,14 +81,14 @@ public @Data class ExerciseSet {
 
     @ManyToOne
     @JoinColumn(
-            name = ID_COLUMN,
+            name = EXERCISE_ID_COLUMN,
             referencedColumnName = Exercise.ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false,
-            foreignKey = @ForeignKey(
-                    name = EXERCISE_ID_FOREIGN_KEY_COLUMN
-            )
+            updatable = false
+//            foreignKey = @ForeignKey(
+//                    name = EXERCISE_ID_FOREIGN_KEY_COLUMN
+//            )
     )
     private Exercise exercise;
 }

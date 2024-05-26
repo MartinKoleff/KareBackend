@@ -35,12 +35,12 @@ public interface DoWorkoutPerformanceMetricsRepository extends JpaRepository<DoW
     @Query("DELETE FROM DoWorkoutPerformanceMetrics s WHERE s.workoutId = :workoutId")
     void deleteByWorkoutId(Long workoutId);
 
-    @Modifying
-    @Transactional
-    @Query("UPDATE DoWorkoutPerformanceMetrics d SET d.workoutId = :workoutId, d.date = :date WHERE d.id = :id")
-    void updateWorkoutPerformanceMetrics(
-            Long id,
-            Long workoutId,
-            Date date
-    );
+//    @Modifying
+//    @Transactional
+//    @Query("UPDATE DoWorkoutPerformanceMetrics d SET d.workoutId = :workoutId, d.date = :date WHERE d.id = :id")
+//    void updateWorkoutPerformanceMetrics(
+//            Long id,
+//            Long workoutId,
+//            Date date
+//    );
 }

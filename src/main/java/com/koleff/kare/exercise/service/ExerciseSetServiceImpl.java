@@ -28,7 +28,7 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
     }
 
     @Override
-    public ExerciseSetDto getSetById(UUID setId) throws ExerciseSetNotFoundException {
+    public ExerciseSetDto getSetById(String setId) throws ExerciseSetNotFoundException {
         return exerciseSetRepository.findByExerciseSetId(setId)
                 .map(exerciseSetMapper::toDto)
                 .orElseThrow(ExerciseSetNotFoundException::new);
@@ -74,7 +74,7 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
 
 
     @Override
-    public void deleteSetById(UUID setId) {
+    public void deleteSetById(String setId) {
         exerciseSetRepository.deleteByExerciseSetId(setId);
     }
 }

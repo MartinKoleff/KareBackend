@@ -1,19 +1,13 @@
 package com.koleff.kare.exercise.models.entity;
 
-import com.koleff.kare.workout.models.entity.WorkoutDetails;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-
-import java.util.List;
-
-import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
 
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = ExerciseDetails.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
 public @Data class ExerciseDetails {
@@ -29,9 +23,14 @@ public @Data class ExerciseDetails {
     public static final String EXERCISE_ID_FOREIGN_KEY_COLUMN = "exercise_id_fk";
 
     @Id
+    @SequenceGenerator(
+            name = "exercise_details_generator",
+            sequenceName = "exercise_details_sequence",
+            allocationSize = 1
+    )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
-            generator = "exercise_generator" //Use same generator as exercise -> same IDs
+            generator = "exercise_details_generator" //TODO: Use same generator as exercise -> same IDs
     )
     @Column(
             name = ID_COLUMN,
@@ -110,10 +109,10 @@ public @Data class ExerciseDetails {
             referencedColumnName = Exercise.ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false,
-            foreignKey = @ForeignKey(
-                    name = EXERCISE_ID_FOREIGN_KEY_COLUMN
-            )
+            updatable = false
+//            foreignKey = @ForeignKey(
+//                    name = EXERCISE_ID_FOREIGN_KEY_COLUMN
+//            )
     )
     private Exercise exercise;
 }

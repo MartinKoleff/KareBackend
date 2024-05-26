@@ -58,6 +58,10 @@ public @Data class DoWorkoutPerformanceMetrics {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    @OneToMany(mappedBy = "doWorkoutPerformanceMetrics", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "doWorkoutPerformanceMetrics",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     private List<DoWorkoutExerciseSet> doWorkoutExerciseSets;
 }

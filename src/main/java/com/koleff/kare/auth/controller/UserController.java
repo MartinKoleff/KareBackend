@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/user/test")
 @CrossOrigin("*")
 public class UserController {
 
@@ -19,13 +19,13 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/test")
+    @GetMapping("/useraccess")
     @PreAuthorize("hasRole('USER')")
     public String testUserAccess(){
         return "User access level";
     }
 
-    @GetMapping("/test2")
+    @GetMapping("/useraccess/2")
     @PreAuthorize("hasRole('USER')")
     public UserDetails testUserAccess2(){
         return userService.loadUserByUsername("Koleff");

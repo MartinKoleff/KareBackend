@@ -347,18 +347,18 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     private void updateExercise(ExerciseDto dbEntry, ExerciseDto exercise) {
 
         //Update exercise
-        exerciseRepository.updateExercise(
-                exercise.name(),
-                exercise.muscleGroupId(),
-                exercise.machineTypeId(),
-                exercise.snapshot(),
-                exercise.id(),
-                exercise.workoutId()
-        );
+//        exerciseRepository.updateExercise(
+//                exercise.name(),
+//                exercise.muscleGroupId(),
+//                exercise.machineTypeId(),
+//                exercise.snapshot(),
+//                exercise.id(),
+//                exercise.workoutId()
+//        );
 
         //Delete old sets
         dbEntry.sets()
-                .forEach(set -> exerciseSetRepository.deleteByExerciseSetId(set.id()));
+                .forEach(set -> exerciseSetRepository.deleteByExerciseSetId(set.id().toString()));
 
         //Add new sets
         exercise.sets()

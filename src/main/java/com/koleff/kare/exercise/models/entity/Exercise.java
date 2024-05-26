@@ -10,10 +10,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
-
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = Exercise.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
 public @Data class Exercise {
@@ -95,10 +93,10 @@ public @Data class Exercise {
             referencedColumnName = WorkoutDetails.ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false,
-            foreignKey = @ForeignKey(
-                    name = WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN
-            )
+            updatable = false
+//            foreignKey = @ForeignKey(
+//                    name = WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN
+//            )
     )
     private WorkoutDetails workoutDetails;
 

@@ -1,8 +1,16 @@
 package com.koleff.kare.auth.models.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public record RegistrationDTO(
+
+        @JsonProperty("username")
         String username,
+
+        @JsonProperty("password")
         String password,
+
+        @JsonProperty("email")
         String email
 ) {
     @Override
