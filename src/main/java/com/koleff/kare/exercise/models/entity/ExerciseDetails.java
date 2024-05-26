@@ -22,6 +22,17 @@ public @Data class ExerciseDetails {
     public static final String VIDEO_URL_COLUMN = "video_url_column";
     public static final String EXERCISE_ID_FOREIGN_KEY_COLUMN = "exercise_id_fk";
 
+    public ExerciseDetails(Long exerciseDetailsId, Long workoutId, String name, String description, Integer muscleGroupId, Integer machineTypeId, String snapshot, String videoUrl) {
+        this.exerciseDetailsId = exerciseDetailsId;
+        this.workoutId = workoutId;
+        this.name = name;
+        this.description = description;
+        this.muscleGroupId = muscleGroupId;
+        this.machineTypeId = machineTypeId;
+        this.snapshot = snapshot;
+        this.videoUrl = videoUrl;
+    }
+
     @Id
     @SequenceGenerator(
             name = "exercise_details_generator",
@@ -43,7 +54,7 @@ public @Data class ExerciseDetails {
     @Column(
             name = WORKOUT_ID_COLUMN,
             updatable = false,
-            unique = true,
+            unique = false,
             nullable = false
     )
     @NotNull(message = "Workout id must not be empty.")

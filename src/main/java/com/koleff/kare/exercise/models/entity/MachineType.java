@@ -12,11 +12,11 @@ public enum MachineType {
     CALISTHENICS(4),
     NONE(-1);
 
-    private final int machineId;
+    private final int machineTypeId;
 
     public static MachineType fromId(int id) {
         for (MachineType machineType : values()) {
-            if (machineType.getMachineId() == id) {
+            if (machineType.getMachineTypeId() == id) {
                 return machineType;
             }
         }
