@@ -10,10 +10,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
-import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
-
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = Exercise.TABLE_NAME)
 @AllArgsConstructor
 @NoArgsConstructor
 public @Data class Exercise {
