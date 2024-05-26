@@ -128,10 +128,10 @@ public @Data class DoWorkoutExerciseSet {
             name = DO_WORKOUT_PERFORMANCE_METRICS_ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false
-//            foreignKey = @ForeignKey(
-//                    name = DO_WORKOUT_PERFORMANCE_METRICS_FOREIGN_KEY_COLUMN
-//            )
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = DO_WORKOUT_PERFORMANCE_METRICS_FOREIGN_KEY_COLUMN
+            )
     )
     private DoWorkoutPerformanceMetrics doWorkoutPerformanceMetrics;
 }

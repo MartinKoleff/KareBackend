@@ -102,10 +102,10 @@ public @Data class Exercise {
             referencedColumnName = WorkoutDetails.ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false
-//            foreignKey = @ForeignKey(
-//                    name = WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN
-//            )
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN
+            )
     )
     private WorkoutDetails workoutDetails;
 

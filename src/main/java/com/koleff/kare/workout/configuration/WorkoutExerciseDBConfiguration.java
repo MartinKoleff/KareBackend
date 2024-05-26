@@ -1,5 +1,6 @@
 package com.koleff.kare.workout.configuration;
 
+import com.koleff.kare.common.Constants;
 import com.koleff.kare.common.ExerciseGenerator;
 import com.koleff.kare.exercise.mapper.ExerciseDetailsMapper;
 import com.koleff.kare.exercise.mapper.ExerciseMapper;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.yaml.snakeyaml.scanner.Constant;
 
 import java.util.List;
 
@@ -52,7 +54,7 @@ public class WorkoutExerciseDBConfiguration {
 
             //Catalog workout
             Workout catalogWorkout = new Workout(
-                    0L,
+                    Constants.CATALOG_WORKOUT_ID,
                     "Catalog workout",
                     MuscleGroup.NONE.getMuscleGroupId(),
                     "",
@@ -62,7 +64,7 @@ public class WorkoutExerciseDBConfiguration {
             );
 
             WorkoutDetails catalogWorkoutDetails = new WorkoutDetails(
-                    0L,
+                    Constants.CATALOG_WORKOUT_ID,
                     "Catalog workout details",
                     "",
                     MuscleGroup.NONE.getMuscleGroupId(),
