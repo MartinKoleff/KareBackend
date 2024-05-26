@@ -30,7 +30,7 @@ public @Data class ExerciseSet {
             allocationSize = 1
     )
     @GeneratedValue(
-            strategy = GenerationType.UUID,
+            strategy = GenerationType.IDENTITY,
             generator = "exercise_set_generator"
     )
     @Column(

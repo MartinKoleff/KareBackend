@@ -27,7 +27,15 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
     public static final String PASSWORD_COLUMN = "password";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @SequenceGenerator(
+            name = "user_generator",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.IDENTITY,
+            generator = "user_generator"
+    )
     @Column(
             name = ID_COLUMN,
             updatable = false,

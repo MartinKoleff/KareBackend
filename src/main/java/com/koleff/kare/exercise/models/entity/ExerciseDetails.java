@@ -29,9 +29,14 @@ public @Data class ExerciseDetails {
     public static final String EXERCISE_ID_FOREIGN_KEY_COLUMN = "exercise_id_fk";
 
     @Id
+    @SequenceGenerator(
+            name = "exercise_details_generator",
+            sequenceName = "exercise_details_sequence",
+            allocationSize = 1
+    )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
-            generator = "exercise_generator" //Use same generator as exercise -> same IDs
+            generator = "exercise_details_generator" //TODO: Use same generator as exercise -> same IDs
     )
     @Column(
             name = ID_COLUMN,
