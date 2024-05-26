@@ -17,7 +17,7 @@ import java.util.UUID;
 import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
 
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = User.TABLE_NAME)
 @AllArgsConstructor
 public @Data class User implements UserDetails { //TODO: Add Jackson serialization / deserialization...
 

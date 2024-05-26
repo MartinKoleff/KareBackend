@@ -6,11 +6,11 @@ import java.util.Date;
 import java.util.UUID;
 
 public record DoWorkoutExerciseSetDto(
-        UUID instanceId,
+        String instanceId,
         Long workoutPerformanceMetricsId,
         Long workoutId,
         Long exerciseId,
-        UUID templateSetId,
+        String templateSetId,
         Integer reps,
         Float weight,
         Boolean isDone,

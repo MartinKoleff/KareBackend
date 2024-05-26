@@ -10,16 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
-public interface DoWorkoutExerciseSetRepository extends JpaRepository<DoWorkoutExerciseSet, UUID> {
+public interface DoWorkoutExerciseSetRepository extends JpaRepository<DoWorkoutExerciseSet, String> {
 
     @Query("SELECT s FROM DoWorkoutExerciseSet s WHERE s.doWorkoutPerformanceMetricsId = :doWorkoutPerformanceMetricsId")
     List<DoWorkoutExerciseSet> findDoWorkoutExerciseSetByDoWorkoutPerformanceMetricsId(Long doWorkoutPerformanceMetricsId);
 
     @Query("SELECT s FROM DoWorkoutExerciseSet s WHERE s.instanceId = :instanceId")
-    DoWorkoutExerciseSet findDoWorkoutExerciseSetByInstanceId(UUID instanceId);
+    DoWorkoutExerciseSet findDoWorkoutExerciseSetByInstanceId(String instanceId);
 
     @Query("SELECT s FROM DoWorkoutExerciseSet s WHERE s.workoutId = :workoutId")
     List<DoWorkoutExerciseSet> findDoWorkoutExerciseSetByWorkoutId(Long workoutId);
@@ -27,7 +26,7 @@ public interface DoWorkoutExerciseSetRepository extends JpaRepository<DoWorkoutE
     @Modifying
     @Transactional
     @Query("DELETE FROM DoWorkoutExerciseSet s WHERE s.instanceId = :instanceId")
-    void deleteByInstanceId(UUID instanceId);
+    void deleteByInstanceId(String instanceId);
 
     @Modifying
     @Transactional
