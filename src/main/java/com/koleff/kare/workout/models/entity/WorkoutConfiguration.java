@@ -16,6 +16,7 @@ public @Data class WorkoutConfiguration {
     public static final String ID_COLUMN = "workout_configuration_id";
     public static final String WORKOUT_DETAILS_ID_COLUMN = "workout_details_id";
     public static final String COOLDOWN_TIME_COLUMN = "cooldown_time";
+    public static final String WORKOUT_DETAILS_FOREIGN_KEY_COLUMN = "workout_details_fk";
 
     @Id
     @SequenceGenerator(
@@ -55,6 +56,14 @@ public @Data class WorkoutConfiguration {
     private String cooldownTime;
 
     @OneToOne
-    @JoinColumn(name = WORKOUT_DETAILS_ID_COLUMN, nullable = false, insertable = false, updatable = false)
+    @JoinColumn(
+            name = WORKOUT_DETAILS_ID_COLUMN,
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = WORKOUT_DETAILS_FOREIGN_KEY_COLUMN
+            )
+    )
     private WorkoutDetails workoutDetails;
 }
