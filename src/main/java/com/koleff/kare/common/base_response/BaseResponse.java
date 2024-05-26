@@ -6,6 +6,6 @@ import lombok.Data;
 
 @AllArgsConstructor
 public @Data class BaseResponse {
-    private boolean isSuccessful;
-    private KareError error;
+    private boolean isSuccessful = true;
+    private KareError error = KareError.OK;
 }
