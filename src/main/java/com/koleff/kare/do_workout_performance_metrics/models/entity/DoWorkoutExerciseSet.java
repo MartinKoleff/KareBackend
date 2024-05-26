@@ -7,7 +7,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+
+import static com.koleff.kare.workout.models.entity.WorkoutConfiguration.WORKOUT_DETAILS_ID_COLUMN;
 
 @Entity
 @Table(name = DoWorkoutExerciseSet.TABLE_NAME)
@@ -25,6 +28,7 @@ public @Data class DoWorkoutExerciseSet {
     public static final String IS_DONE_COLUMN = "is_done";
     public static final String TIME_COLUMN = "time";
     public static final String DATE_COLUMN = "date";
+    public static final String DO_WORKOUT_PERFORMANCE_METRICS_FOREIGN_KEY_COLUMN = "do_workout_performance_metrics_fk";
 
     @Id
     @Column(
@@ -118,4 +122,16 @@ public @Data class DoWorkoutExerciseSet {
     @NotNull(message = "Date done must not be empty")
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+
+    @ManyToOne
+    @JoinColumn(
+            name = DO_WORKOUT_PERFORMANCE_METRICS_ID_COLUMN,
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = DO_WORKOUT_PERFORMANCE_METRICS_FOREIGN_KEY_COLUMN
+            )
+    )
+    private DoWorkoutPerformanceMetrics doWorkoutPerformanceMetrics;
 }
