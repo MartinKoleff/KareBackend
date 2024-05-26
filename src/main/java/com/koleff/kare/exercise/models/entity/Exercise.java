@@ -98,7 +98,7 @@ public @Data class Exercise {
 
     @ManyToOne
     @JoinColumn(
-            name = ID_COLUMN,
+            name = WORKOUT_ID_COLUMN,
             referencedColumnName = WorkoutDetails.ID_COLUMN,
             nullable = false,
             insertable = false,
