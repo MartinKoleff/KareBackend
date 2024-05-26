@@ -10,9 +10,11 @@ import org.mapstruct.Mapping;
 public interface WorkoutDetailsMapper {
     @Mapping(source = "exercises", target = "exercises")
     @Mapping(source = "configuration", target = "configuration")
+    @Mapping(source = "workoutDetailsId", target = "id")
     WorkoutDetailsDto toDto(WorkoutDetails workoutDetails);
 
     @Mapping(source = "exercises", target = "exercises")
     @Mapping(source = "configuration", target = "configuration")
+    @Mapping(source = "id", target = "workoutDetailsId")
     WorkoutDetails toEntity(WorkoutDetailsDto workoutDetailsDto);
 }
