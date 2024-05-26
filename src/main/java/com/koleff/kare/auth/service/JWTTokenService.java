@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,13 +46,13 @@ public class JWTTokenService {
     }
 
     public String generateAccessToken(User user) {
-        JwtClaimsSet claims = buildClaimsSet(user.getId().toString(), accessTokenExpirationTime, user);
+        JwtClaimsSet claims = buildClaimsSet(user.getId(), accessTokenExpirationTime, user);
 
         return generateToken(user, claims, false);
     }
 
     public String generateRefreshToken(User user) {
-        JwtClaimsSet claims = buildClaimsSet(user.getId().toString(), refreshTokenExpirationTime, user);
+        JwtClaimsSet claims = buildClaimsSet(user.getId(), refreshTokenExpirationTime, user);
 
         return generateToken(user, claims, true);
     }
@@ -95,6 +96,7 @@ public class JWTTokenService {
     private void saveToken(User user, String jwtToken, Boolean isRefreshToken) {
         var token = Token.builder()
                 .user(user)
+                .userId(user.getId())
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
@@ -107,7 +109,7 @@ public class JWTTokenService {
     }
 
     public void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId().toString());
+        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(token -> {
@@ -139,7 +141,7 @@ public class JWTTokenService {
     public boolean validateToken(String token, UserDetails userDetails) throws InvalidTokenException {
         final String username = extractUsername(token);
 
-        if (username.equals(userDetails.getUsername()) && !isTokenExpired(token)) throw new InvalidTokenException();
+        if (!username.equals(userDetails.getUsername()) || isTokenExpired(token)) throw new InvalidTokenException();
 
         return true;
     }
@@ -148,7 +150,7 @@ public class JWTTokenService {
         Jwt jwt = jwtDecoder.decode(token);
 
         try {
-            return jwt.getExpiresAt().isBefore(Instant.now());
+            return Objects.requireNonNull(jwt.getExpiresAt()).isBefore(Instant.now());
         } catch (NullPointerException e) {
             throw new TokenExpiredException();
         }
