@@ -90,5 +90,5 @@ public @Data class ExerciseSet {
                     name = EXERCISE_ID_FOREIGN_KEY_COLUMN
             )
     )
-    private ExerciseDetails exerciseDetails;
+    private Exercise exercise;
 }
