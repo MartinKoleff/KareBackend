@@ -2,6 +2,7 @@ package com.koleff.kare.auth.configuration;
 
 import com.koleff.kare.auth.service.UserService;
 import com.koleff.kare.auth.service.JWTTokenService;
+import com.koleff.kare.common.error.exceptions.TokenExpiredException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

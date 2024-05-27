@@ -1,14 +1,7 @@
 package com.koleff.kare.auth.models.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.koleff.kare.workout.models.entity.Workout;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,14 +10,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 
-import static com.koleff.kare.auth.models.entity.Token.TABLE_NAME;
-
-@Data
+@Entity
+@Table(name = Token.TABLE_NAME)
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = TABLE_NAME)
-public class Token {
+public @Data class Token {
 
     public static final String TABLE_NAME = "token_table";
     public static final String ID_COLUMN = "token_id";
@@ -34,6 +25,8 @@ public class Token {
     public static final String EXPIRED_COLUMN = "expired";
     public static final String EXPIRY_TIME_COLUMN = "expiry_time";
     public static final String IS_REFRESH_TOKEN_COLUMN = "is_refresh_token";
+    public static final String USER_FOREIGN_KEY_COLUMN = "user_fk";
+    public static final String USER_ID_COLUMN = "user_id";
 
     @Id
     @GeneratedValue
@@ -44,7 +37,16 @@ public class Token {
             nullable = false
     )
     @NotNull(message = "Token id must not be empty.")
-    public Integer id;
+    public Long id;
+
+    @Column(
+            name = USER_ID_COLUMN,
+            updatable = false,
+            unique = false,
+            nullable = false
+    )
+    @NotNull(message = "User id must not be empty.")
+    public String userId;
 
     @Column(
             name = TOKEN_COLUMN,
@@ -102,6 +104,15 @@ public class Token {
     public Instant expiryTime;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(
+            name = USER_ID_COLUMN,
+            referencedColumnName = User.ID_COLUMN,
+            nullable = false,
+            insertable = false,
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = USER_FOREIGN_KEY_COLUMN
+            )
+    )
     public User user;
 }

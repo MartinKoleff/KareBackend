@@ -36,7 +36,7 @@ public class ApplicationConfiguration {
      * Always add Admin user and all roles and permissions in the DB
      */
     @Bean
-    public CommandLineRunner initializeDatabase() {
+    public CommandLineRunner initializeUserAndRoleDatabase() {
         return args -> {
 
             //DB is initialized
@@ -78,7 +78,8 @@ public class ApplicationConfiguration {
             roleRepository.save(coachRole);
 
             //Create admin user
-            User admin = new User(UUID.randomUUID().toString(),
+            User admin = new User(
+                    UUID.randomUUID().toString(),
                     "admin",
                     passwordEncoder.encode("password"),
                     "admin@test.com",
@@ -86,7 +87,8 @@ public class ApplicationConfiguration {
                             adminRole,
                             userRole,
                             coachRole
-                    ));
+                    )
+            );
 
             userRepository.save(admin);
         };

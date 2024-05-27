@@ -4,6 +4,8 @@ import com.koleff.kare.auth.models.entity.User;
 import com.koleff.kare.auth.models.entity.Token;
 import com.koleff.kare.auth.models.entity.TokenType;
 import com.koleff.kare.auth.repository.TokenRepository;
+import com.koleff.kare.common.error.exceptions.InvalidTokenException;
+import com.koleff.kare.common.error.exceptions.TokenExpiredException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,6 +97,7 @@ public class JWTTokenService {
     private void saveToken(User user, String jwtToken, Boolean isRefreshToken) {
         var token = Token.builder()
                 .user(user)
+                .userId(user.getId())
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .expired(false)
@@ -105,7 +110,7 @@ public class JWTTokenService {
     }
 
     public void revokeAllUserTokens(User user) {
-        var validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+        List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
         if (validUserTokens.isEmpty())
             return;
         validUserTokens.forEach(token -> {
@@ -134,14 +139,22 @@ public class JWTTokenService {
         return jwt.getSubject(); //sub
     }
 
-    public boolean validateToken(String token, UserDetails userDetails) throws NullPointerException {
+    public boolean validateToken(String token, UserDetails userDetails) throws InvalidTokenException {
         final String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+
+        if (!username.equals(userDetails.getUsername()) || isTokenExpired(token)) throw new InvalidTokenException();
+
+        return true;
     }
 
-    private boolean isTokenExpired(String token) throws NullPointerException {
+    private boolean isTokenExpired(String token) throws TokenExpiredException {
         Jwt jwt = jwtDecoder.decode(token);
-        return jwt.getExpiresAt().isBefore(Instant.now());
+
+        try {
+            return Objects.requireNonNull(jwt.getExpiresAt()).isBefore(Instant.now());
+        } catch (NullPointerException e) {
+            throw new TokenExpiredException();
+        }
     }
 }
 

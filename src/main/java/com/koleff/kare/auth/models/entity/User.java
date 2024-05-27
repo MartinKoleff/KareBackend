@@ -5,17 +5,19 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 import static com.koleff.kare.auth.models.entity.User.TABLE_NAME;
 
 @Entity
-@Table(name = TABLE_NAME)
+@Table(name = User.TABLE_NAME)
 @AllArgsConstructor
 public @Data class User implements UserDetails { //TODO: Add Jackson serialization / deserialization...
 
@@ -26,7 +28,7 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
     public static final String PASSWORD_COLUMN = "password";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @UuidGenerator
     @Column(
             name = ID_COLUMN,
             updatable = false,
@@ -64,8 +66,8 @@ public @Data class User implements UserDetails { //TODO: Add Jackson serializati
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role_junction",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            joinColumns = @JoinColumn(name = ID_COLUMN),
+            inverseJoinColumns = @JoinColumn(name = Role.ID_COLUMN)
     )
     private Set<Role> authorities;
 
