@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+import com.koleff.kare.auth.mapper.UserMapper;
+import com.koleff.kare.auth.models.dto.UserDto;
 import com.koleff.kare.auth.models.entity.Role;
 import com.koleff.kare.auth.models.entity.User;
 import com.koleff.kare.auth.repository.RoleRepository;
@@ -33,22 +35,26 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final JWTTokenService jwtTokenService;
     private final static Logger logger = LogManager.getLogger(AuthenticationServiceImpl.class);
+    private final UserMapper userMapper;
 
     @Autowired
     public AuthenticationServiceImpl(UserRepository userRepository,
                                      RoleRepository roleRepository,
                                      PasswordEncoder passwordEncoder,
                                      AuthenticationManager authenticationManager,
-                                     JWTTokenService jwtTokenService) {
+                                     JWTTokenService jwtTokenService,
+                                     UserMapper userMapper
+    ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtTokenService = jwtTokenService;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public User registerUser(String username, String password, String email) {
+    public UserDto registerUser(String username, String password, String email) {
 
         //Encode the password
         String encodedPassword = passwordEncoder.encode(password);
@@ -62,11 +68,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         User user = new User(UUID.randomUUID().toString(), username, encodedPassword, email, authorities);
         logger.info(String.format("User created! User: %s", user));
 
-        return userRepository.save(user);
+        return userMapper.toDto(userRepository.save(user));
     }
 
     @Override
-    public AuthenticationResponse loginUser(String username, String password) throws InvalidCredentialsException {
+    public AuthenticationResponse loginUser(String username, String password) throws InvalidCredentialsException, UsernameNotFoundException {
 
         try {
             Authentication auth = authenticationManager.authenticate(
@@ -119,5 +125,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         //Invalid token
         throw new InvalidTokenException();
+    }
+
+    @Override
+    public void logout(UserDto userDto) throws UsernameNotFoundException{
+        //Validate user exists in DB
+        User user = userRepository.findByUsername(userDto.username())
+                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        //Expire token
+        jwtTokenService.revokeAllUserTokens(user);
     }
 }
