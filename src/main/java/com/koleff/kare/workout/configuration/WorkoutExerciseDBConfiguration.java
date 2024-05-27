@@ -74,8 +74,11 @@ public class WorkoutExerciseDBConfiguration {
                     null
             );
 
-            workoutRepository.save(catalogWorkout);
-            workoutDetailsRepository.save(catalogWorkoutDetails);
+            //TODO: ignore auto generate id...
+            workoutRepository.saveAndFlush(catalogWorkout);
+
+            //TODO: ignore auto generate id...
+            workoutDetailsRepository.saveAndFlush(catalogWorkoutDetails);
 
             //Exercises
             List<Exercise> exerciseList = ExerciseGenerator.getAllExercises()
@@ -88,8 +91,8 @@ public class WorkoutExerciseDBConfiguration {
                     .map(exerciseDetailsMapper::toEntity)
                     .toList();
 
-            exerciseRepository.saveAll(exerciseList);
-            exerciseDetailsRepository.saveAll(exerciseDetailsList);
+            exerciseRepository.saveAllAndFlush(exerciseList);
+            exerciseDetailsRepository.saveAllAndFlush(exerciseDetailsList);
         };
     }
 }

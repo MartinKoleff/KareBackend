@@ -31,7 +31,7 @@ public @Data class WorkoutDetails {
     )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
-            generator = "workout_details_generator"
+            generator = "workout_details_generator" //TODO: ignore for workoutExerciseDbConfig...
     )
     @Column(
             name = ID_COLUMN,
