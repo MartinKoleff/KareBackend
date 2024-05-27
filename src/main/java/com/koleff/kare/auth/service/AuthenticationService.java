@@ -11,4 +11,6 @@ public interface AuthenticationService {
     AuthenticationResponse loginUser(String username, String password);
 
     AuthenticationResponse refreshToken(String refreshToken);
+
+    void logout(UserDto userDto);
 }
