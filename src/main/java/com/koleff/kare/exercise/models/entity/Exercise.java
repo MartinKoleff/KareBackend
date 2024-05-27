@@ -24,6 +24,15 @@ public @Data class Exercise {
     public static final String MACHINE_TYPE_ID_COLUMN = "machine_type_id_column";
     public static final String SNAPSHOT_COLUMN = "snapshot_column";
 
+    public Exercise(Long exerciseId, Long workoutId, String name, Integer muscleGroupId, Integer machineTypeId, String snapshot) {
+        this.exerciseId = exerciseId;
+        this.workoutId = workoutId;
+        this.name = name;
+        this.muscleGroupId = muscleGroupId;
+        this.machineTypeId = machineTypeId;
+        this.snapshot = snapshot;
+    }
+
     @Id
     @SequenceGenerator(
             name = "exercise_generator",
@@ -45,7 +54,7 @@ public @Data class Exercise {
     @Column(
             name = WORKOUT_ID_COLUMN,
             updatable = false,
-            unique = true,
+            unique = false,
             nullable = false
     )
     @NotNull(message = "Workout id must not be empty.")
@@ -89,14 +98,14 @@ public @Data class Exercise {
 
     @ManyToOne
     @JoinColumn(
-            name = ID_COLUMN,
+            name = WORKOUT_ID_COLUMN,
             referencedColumnName = WorkoutDetails.ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false
-//            foreignKey = @ForeignKey(
-//                    name = WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN
-//            )
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN
+            )
     )
     private WorkoutDetails workoutDetails;
 

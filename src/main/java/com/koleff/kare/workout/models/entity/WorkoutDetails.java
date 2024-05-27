@@ -31,7 +31,7 @@ public @Data class WorkoutDetails {
     )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
-            generator = "workout_details_generator"
+            generator = "workout_details_generator" //TODO: ignore for workoutExerciseDbConfig...
     )
     @Column(
             name = ID_COLUMN,
@@ -78,16 +78,16 @@ public @Data class WorkoutDetails {
     @NotNull(message = "Is favorite must not be empty")
     private Boolean isFavorite;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(
             name = ID_COLUMN,
             referencedColumnName = Workout.ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false
-//            foreignKey = @ForeignKey(
-//                    name = WORKOUT_ID_FOREIGN_KEY_COLUMN
-//            )
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = WORKOUT_ID_FOREIGN_KEY_COLUMN
+            )
     )
     private Workout workout;
 

@@ -22,6 +22,7 @@ public class KareExceptionHandler {
     @ExceptionHandler(value = {
             DoWorkoutPerformanceMetricsNotFoundException.class,
             ExerciseNotFoundException.class,
+            ExerciseDetailsNotFoundException.class,
             ExerciseSetNotFoundException.class,
             UserNotFoundException.class,
             WorkoutConfigurationNotFoundException.class,
@@ -45,6 +46,7 @@ public class KareExceptionHandler {
     @ExceptionHandler(value = {
             InvalidCredentialsException.class,
             InvalidExerciseException.class,
+            InvalidExerciseDetailsException.class,
             InvalidWorkoutException.class,
             WorkoutHasNoExercisesException.class
     })

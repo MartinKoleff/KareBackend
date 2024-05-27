@@ -2,6 +2,7 @@ package com.koleff.kare.exercise.models.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,6 +22,17 @@ public @Data class ExerciseDetails {
     public static final String SNAPSHOT_COLUMN = "snapshot_column";
     public static final String VIDEO_URL_COLUMN = "video_url_column";
     public static final String EXERCISE_ID_FOREIGN_KEY_COLUMN = "exercise_id_fk";
+
+    public ExerciseDetails(Long exerciseDetailsId, Long workoutId, String name, String description, Integer muscleGroupId, Integer machineTypeId, String snapshot, String videoUrl) {
+        this.exerciseDetailsId = exerciseDetailsId;
+        this.workoutId = workoutId;
+        this.name = name;
+        this.description = description;
+        this.muscleGroupId = muscleGroupId;
+        this.machineTypeId = machineTypeId;
+        this.snapshot = snapshot;
+        this.videoUrl = videoUrl;
+    }
 
     @Id
     @SequenceGenerator(
@@ -43,7 +55,7 @@ public @Data class ExerciseDetails {
     @Column(
             name = WORKOUT_ID_COLUMN,
             updatable = false,
-            unique = true,
+            unique = false,
             nullable = false
     )
     @NotNull(message = "Workout id must not be empty.")
@@ -55,6 +67,7 @@ public @Data class ExerciseDetails {
             unique = false,
             nullable = false
     )
+    @Size(max = 500)
     @NotNull(message = "Name must not be empty.")
     private String name;
 
@@ -64,6 +77,7 @@ public @Data class ExerciseDetails {
             unique = false,
             nullable = false
     )
+    @Size(max = 2000)
     @NotNull(message = "Description must not be empty.")
     private String description;
 
@@ -109,10 +123,10 @@ public @Data class ExerciseDetails {
             referencedColumnName = Exercise.ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false
-//            foreignKey = @ForeignKey(
-//                    name = EXERCISE_ID_FOREIGN_KEY_COLUMN
-//            )
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = EXERCISE_ID_FOREIGN_KEY_COLUMN
+            )
     )
     private Exercise exercise;
 }

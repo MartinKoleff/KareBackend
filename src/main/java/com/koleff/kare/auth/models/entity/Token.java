@@ -109,10 +109,10 @@ public @Data class Token {
             referencedColumnName = User.ID_COLUMN,
             nullable = false,
             insertable = false,
-            updatable = false
-//            foreignKey = @ForeignKey(
-//                    name = USER_FOREIGN_KEY_COLUMN
-//            )
+            updatable = false,
+            foreignKey = @ForeignKey(
+                    name = USER_FOREIGN_KEY_COLUMN
+            )
     )
     public User user;
 }
