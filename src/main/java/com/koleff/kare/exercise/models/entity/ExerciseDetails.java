@@ -2,6 +2,7 @@ package com.koleff.kare.exercise.models.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -66,6 +67,7 @@ public @Data class ExerciseDetails {
             unique = false,
             nullable = false
     )
+    @Size(max = 500)
     @NotNull(message = "Name must not be empty.")
     private String name;
 
@@ -75,6 +77,7 @@ public @Data class ExerciseDetails {
             unique = false,
             nullable = false
     )
+    @Size(max = 2000)
     @NotNull(message = "Description must not be empty.")
     private String description;
 
