@@ -6,6 +6,8 @@
 #EXPOSE 8080
 
 FROM openjdk:17-jdk-alpine
+COPY . .
+RUN mvn clean install
 
 COPY target/kare-0.0.1-SNAPSHOT.jar  kare-0.0.1-SNAPSHOT.jar
 ENTRYPOINT ["java", "-jar", "/kare-0.0.1-SNAPSHOT.jar"]

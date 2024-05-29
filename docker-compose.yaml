@@ -35,3 +35,12 @@ services:
       API_KEY: cKu-_GoHo7_zlKjHIzoCQgng__iPPAa30tTJH0fT
       ZONE: mkoleff.com
       PROXIED: false
+
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d/

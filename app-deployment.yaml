@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: kare-server-k8s
-          image: mkoleff/kare-server:1.0
+          image: mkoleff/kare-server:latest
           ports:
             - containerPort: 8080
           env:   # Setting Environmental Variables
