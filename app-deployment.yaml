@@ -15,7 +15,6 @@ spec:
       containers:
         - name: kare-server-k8s
           image: mkoleff/kare-server:1.0
-          imagePullPolicy: Never
           ports:
             - containerPort: 8080
           env:   # Setting Environmental Variables

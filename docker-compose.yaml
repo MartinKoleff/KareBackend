@@ -6,8 +6,8 @@ services:
     container_name: psql-db
     restart: always
     environment:
-      - POSTGRES_USER=
-      - POSTGRES_PASSWORD=
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=stront20
       - POSTGRES_DB=kare
     ports:
       - '5432:5432'
@@ -21,8 +21,17 @@ services:
       - '8080:8080'
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://psql-db:5432/kare
-      - SPRING_DATASOURCE_USERNAME=
-      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=stront20
       - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
     depends_on:
       - psql-db
+
+  cloudflare-ddns:
+    container_name: cloudflare-ddns
+    image: oznu/cloudflare-ddns:latest
+    restart: unless-stopped
+    environment:
+      API_KEY: cKu-_GoHo7_zlKjHIzoCQgng__iPPAa30tTJH0fT
+      ZONE: mkoleff.com
+      PROXIED: false
