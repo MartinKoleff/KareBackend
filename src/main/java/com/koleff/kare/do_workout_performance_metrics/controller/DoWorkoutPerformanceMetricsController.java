@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/api/v1/doworkoutperformancemetrics/")
+@RequestMapping("api/v1/doworkoutperformancemetrics")
 public class DoWorkoutPerformanceMetricsController {
 
     private final DoWorkoutPerformanceMetricsService doWorkoutPerformanceMetricsService;
