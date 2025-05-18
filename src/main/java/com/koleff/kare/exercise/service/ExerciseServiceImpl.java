@@ -39,9 +39,17 @@ public class ExerciseServiceImpl implements ExerciseService {
                 .map(exerciseMapper::toDto)
                 .toList();
 
-        if(catalogExercises.isEmpty()) throw new ExerciseNotFoundException();
+        if (catalogExercises.isEmpty()) throw new ExerciseNotFoundException();
 
         return catalogExercises;
+    }
+
+    @Override
+    public ExerciseDto getCatalogExercise(Long exerciseId) throws ExerciseNotFoundException {
+        return exerciseRepository
+                .findByExerciseIdAndWorkoutId(exerciseId, Constants.CATALOG_WORKOUT_ID)
+                .map(exerciseMapper::toDto)
+                .orElseThrow(ExerciseNotFoundException::new);
     }
 
     @Override

@@ -7,8 +7,8 @@ import com.koleff.kare.exercise.models.entity.ExerciseSet;
 import java.util.List;
 
 public interface ExerciseService {
-
     List<ExerciseDto> getCatalogExercises(Integer muscleGroupId);
+    ExerciseDto getCatalogExercise(Long exerciseId);
     List<ExerciseDto> getAllCatalogExercises();
     List<ExerciseDto> getAllExercises();
     ExerciseDto getExercise(Long exerciseId, Long workoutId);

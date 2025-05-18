@@ -1,4 +1,4 @@
 package com.koleff.kare.workout.models.request;
 
-public record ExerciseDeletionRequest(Long workoutId, Long exerciseId) {
+public record ExerciseRequest(Long workoutId, Long exerciseId) {
 }

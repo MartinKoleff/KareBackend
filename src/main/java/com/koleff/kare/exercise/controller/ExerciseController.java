@@ -85,20 +85,4 @@ public class ExerciseController {
                 null
         );
     }
-
-//    //Use only in local datasource in client...
-//
-//    @PostMapping("/addnewexerciseset")
-//    public ExerciseResponse addNewExerciseSet(@RequestBody AddNewExerciseSetRequest request) {
-//        ExerciseDto exercise = exerciseConfigureService.addNewExerciseSet(request.exerciseId(), request.workoutId(), request.currentSets());
-//
-//        return new ExerciseResponse(exercise);
-//    }
-//
-//    @PostMapping("/deleteexerciseset")
-//    public ExerciseResponse deleteExerciseSet(@RequestBody DeleteExerciseSetRequest request) {
-//        ExerciseDto exercise = exerciseConfigureService.deleteExerciseSet(request.exerciseId(), request.workoutId(), request.setId());
-//
-//        return new ExerciseResponse(exercise);
-//    }
 }
