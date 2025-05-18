@@ -1,6 +1,7 @@
 package com.koleff.kare.statistics.general.repository;
 
 import com.koleff.kare.do_workout_performance_metrics.models.entity.DoWorkoutExerciseSet;
+import com.koleff.kare.do_workout_performance_metrics.models.entity.DoWorkoutPerformanceMetrics;
 import com.koleff.kare.exercise.models.entity.ExerciseSet;
 import com.koleff.kare.workout.models.entity.Workout;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,7 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface GeneralStatisticsRepository {
+public interface GeneralStatisticsRepository extends JpaRepository<DoWorkoutPerformanceMetrics, Long> { //TODO: temporary as JPARepository...
     @Query("SELECT COUNT(d) FROM DoWorkoutPerformanceMetrics d")
     int getTotalWorkoutsCompleted();
 
