@@ -124,7 +124,7 @@ public class WorkoutController {
     }
 
     @DeleteMapping("/deleteexercise")
-    public WorkoutDetailsResponse deleteWorkout(@RequestBody ExerciseDeletionRequest request) {
+    public WorkoutDetailsResponse deleteExercise(@RequestBody ExerciseRequest request) {
         WorkoutDetailsDto workoutDetails = workoutCustomService.deleteExercise(request.workoutId(), request.exerciseId());
 
         return new WorkoutDetailsResponse(
@@ -148,6 +148,17 @@ public class WorkoutController {
     @PostMapping("/addexercise")
     public WorkoutDetailsResponse addExercise(@RequestBody ExerciseAddRequest request) {
         WorkoutDetailsDto workoutDetails = workoutCustomService.addExercise(request.workoutId(), request.exercise());
+
+        return new WorkoutDetailsResponse(
+                workoutDetails,
+                true,
+                null
+        );
+    }
+
+    @PostMapping("/addexercisebyid")
+    public WorkoutDetailsResponse addExercise(@RequestBody ExerciseRequest request) {
+        WorkoutDetailsDto workoutDetails = workoutCustomService.addExercise(request.workoutId(), request.exerciseId());
 
         return new WorkoutDetailsResponse(
                 workoutDetails,

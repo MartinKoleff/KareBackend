@@ -1,5 +1,6 @@
 package com.koleff.kare.workout.service;
 
+import com.koleff.kare.common.Constants;
 import com.koleff.kare.common.error.exceptions.ExerciseNotFoundException;
 import com.koleff.kare.common.error.exceptions.InvalidExerciseException;
 import com.koleff.kare.common.error.exceptions.WorkoutDetailsNotFoundException;
@@ -186,6 +187,16 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
+    public WorkoutDetailsDto addExercise(Long workoutId, Long exerciseId) {
+        ExerciseDto catalogExercise = exerciseRepository
+                .findByExerciseIdAndWorkoutId(exerciseId, Constants.CATALOG_WORKOUT_ID)
+                .map(exerciseMapper::toDto)
+                .orElseThrow(ExerciseNotFoundException::new);
+
+        return addExercise(workoutId, catalogExercise);
+    }
+
+    @Override
     public WorkoutDetailsDto addMultipleExercises(Long workoutId, List<ExerciseDto> exercises) throws InvalidExerciseException, WorkoutDetailsNotFoundException {
 
         //Validation
@@ -242,7 +253,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto submitMultipleExercises(Long workoutId, List<ExerciseDto> exercises)  throws InvalidExerciseException, WorkoutDetailsNotFoundException {
+    public WorkoutDetailsDto submitMultipleExercises(Long workoutId, List<ExerciseDto> exercises) throws InvalidExerciseException, WorkoutDetailsNotFoundException {
         //Validation
         for (ExerciseDto exercise : exercises) {
             if (!exercise.workoutId().equals(workoutId)) {
@@ -278,7 +289,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto deleteExercise(Long workoutId, Long exerciseId) throws ExerciseNotFoundException, WorkoutDetailsNotFoundException{
+    public WorkoutDetailsDto deleteExercise(Long workoutId, Long exerciseId) throws ExerciseNotFoundException, WorkoutDetailsNotFoundException {
 
         //If exercise is not found error will be thrown
         Exercise exercise = exerciseRepository.findByExerciseIdAndWorkoutId(exerciseId, workoutId)
@@ -299,7 +310,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
     }
 
     @Override
-    public WorkoutDetailsDto deleteMultipleExercises(Long workoutId, List<Long> exerciseIds) throws ExerciseNotFoundException, WorkoutDetailsNotFoundException{
+    public WorkoutDetailsDto deleteMultipleExercises(Long workoutId, List<Long> exerciseIds) throws ExerciseNotFoundException, WorkoutDetailsNotFoundException {
 
         //Validation
         WorkoutDetails workoutDetails = workoutDetailsRepository.getWorkoutDetailsByWorkoutDetailsId(workoutId);

@@ -19,6 +19,8 @@ public interface WorkoutCustomService {
 
     WorkoutDetailsDto addExercise(Long workoutId, ExerciseDto exercise);
 
+    WorkoutDetailsDto addExercise(Long workoutId, Long exerciseId);
+
     WorkoutDetailsDto addMultipleExercises(Long workoutId, List<ExerciseDto> exercises);
 
     WorkoutDetailsDto submitExercise(Long workoutId, ExerciseDto exercise);
