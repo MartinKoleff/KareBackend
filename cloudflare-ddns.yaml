@@ -1,0 +1,10 @@
+version: '3'
+services:
+  cloudflare-ddns:
+    container_name: cloudflare-ddns
+    image: oznu/cloudflare-ddns:latest
+    restart: unless-stopped
+    environment:
+      API_KEY: cKu-_GoHo7_zlKjHIzoCQgng__iPPAa30tTJH0fT
+      ZONE: mkoleff.com
+      PROXIED: false
