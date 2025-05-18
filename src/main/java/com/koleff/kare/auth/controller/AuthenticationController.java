@@ -9,13 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public interface AuthenticationController {
-
-    RegistrationResponse registerUser(@RequestBody AuthenticationRequest request);
-
-    AuthenticationResponse loginUser(@RequestBody AuthenticationRequest request);
-
-    AuthenticationResponse refreshToken(@RequestParam("refreshToken") String refreshToken);
-
+    AuthenticationResponse login(@RequestBody AuthenticationRequest request);
+    RegistrationResponse register(@RequestBody AuthenticationRequest request);
     BaseResponse logout(@RequestBody LogoutRequest request);
-
+    AuthenticationResponse refreshToken(@RequestParam("refreshToken") String refreshToken);
 }

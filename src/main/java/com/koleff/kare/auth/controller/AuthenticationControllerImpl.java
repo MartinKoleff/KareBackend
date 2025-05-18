@@ -23,21 +23,16 @@ public class AuthenticationControllerImpl implements AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    @PostMapping("/register")
-    public RegistrationResponse registerUser(@RequestBody AuthenticationRequest request) {
-        UserDto user = authenticationService.registerUser(request.username(), request.password(), request.email());
-
-        return new RegistrationResponse(user);
-    }
-
     @PostMapping("/login")
-    public AuthenticationResponse loginUser(@RequestBody AuthenticationRequest request) {
+    public AuthenticationResponse login(@RequestBody AuthenticationRequest request) {
         return authenticationService.loginUser(request.username(), request.password());
     }
 
-    @PostMapping("/refreshtoken")
-    public AuthenticationResponse refreshToken(@RequestParam("refreshToken") String refreshToken) {
-        return authenticationService.refreshToken(refreshToken);
+    @PostMapping("/register")
+    public RegistrationResponse register(@RequestBody AuthenticationRequest request) {
+        UserDto user = authenticationService.registerUser(request.username(), request.password(), request.email());
+
+        return new RegistrationResponse(user);
     }
 
     @PostMapping("/logout")
@@ -48,5 +43,10 @@ public class AuthenticationControllerImpl implements AuthenticationController {
                 true,
                 null
         );
+    }
+
+    @PostMapping("/refreshtoken")
+    public AuthenticationResponse refreshToken(@RequestParam("refreshToken") String refreshToken) {
+        return authenticationService.refreshToken(refreshToken);
     }
 }
