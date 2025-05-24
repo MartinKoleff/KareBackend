@@ -93,7 +93,7 @@ public @Data class WorkoutDetails {
 
     @OneToMany(
             mappedBy = "workoutDetails",
-            cascade = CascadeType.ALL,
+            cascade = CascadeType.PERSIST, // Or PERSIST + MERGE
             orphanRemoval = true
     )
     private List<Exercise> exercises;

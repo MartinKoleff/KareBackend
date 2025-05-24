@@ -23,19 +23,21 @@ public @Data class ExerciseSet {
     public static final String REPS_COLUMN = "reps";
     public static final String WEIGHT_COLUMN = "weight";
     public static final String EXERCISE_ID_FOREIGN_KEY_COLUMN = "exercise_id_fk";
+    public static final String WORKOUT_ID_FOREIGN_KEY_COLUMN = "workout_id_fk";
 
     @Id
     @UuidGenerator
     @Column(
             name = ID_COLUMN,
-            updatable = false,
             unique = true,
+            updatable = false,
             nullable = false
     )
     private String exerciseSetId;
 
     @Column(
             name = EXERCISE_ID_COLUMN,
+            insertable = false,
             updatable = false,
             unique = false,
             nullable = false
@@ -45,6 +47,7 @@ public @Data class ExerciseSet {
 
     @Column(
             name = WORKOUT_ID_COLUMN,
+            insertable = false,
             updatable = false,
             unique = false,
             nullable = false
@@ -80,15 +83,13 @@ public @Data class ExerciseSet {
     private Float weight;
 
     @ManyToOne
-    @JoinColumn(
-            name = EXERCISE_ID_COLUMN,
-            referencedColumnName = Exercise.ID_COLUMN,
-            nullable = false,
-            insertable = false,
-            updatable = false,
-            foreignKey = @ForeignKey(
+    @JoinColumns({
+            @JoinColumn(name = EXERCISE_ID_COLUMN, referencedColumnName = Exercise.EXERCISE_ID_COLUMN, foreignKey = @ForeignKey(
                     name = EXERCISE_ID_FOREIGN_KEY_COLUMN
-            )
-    )
+            )),
+            @JoinColumn(name = WORKOUT_ID_COLUMN, referencedColumnName = Exercise.WORKOUT_ID_COLUMN, foreignKey = @ForeignKey(
+                    name = WORKOUT_ID_FOREIGN_KEY_COLUMN
+            )),
+    })
     private Exercise exercise;
 }

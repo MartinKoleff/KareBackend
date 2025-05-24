@@ -9,14 +9,14 @@ public record ExerciseSetDto(
         @JsonProperty("id")
         String id,
 
-        @JsonProperty("number")
-        Integer number,
-
         @JsonProperty("exercise_id")
         Long exerciseId,
 
         @JsonProperty("workout_id")
         Long workoutId,
+
+        @JsonProperty("number")
+        Integer number,
 
         @JsonProperty("reps")
         Integer reps,

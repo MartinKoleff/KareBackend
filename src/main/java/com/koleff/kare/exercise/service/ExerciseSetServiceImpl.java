@@ -72,7 +72,6 @@ public class ExerciseSetServiceImpl implements ExerciseSetService {
         );
     }
 
-
     @Override
     public void deleteSetById(String setId) {
         exerciseSetRepository.deleteByExerciseSetId(setId);

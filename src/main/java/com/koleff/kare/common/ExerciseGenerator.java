@@ -2,15 +2,9 @@ package com.koleff.kare.common;
 
 import com.koleff.kare.exercise.models.dto.ExerciseDetailsDto;
 import com.koleff.kare.exercise.models.dto.ExerciseDto;
-import com.koleff.kare.exercise.models.entity.Exercise;
-import com.koleff.kare.exercise.models.entity.ExerciseDetails;
-import com.koleff.kare.exercise.models.entity.MachineType;
-import com.koleff.kare.exercise.models.entity.MuscleGroup;
+import com.koleff.kare.exercise.models.entity.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 public class ExerciseGenerator {
 
@@ -32,9 +26,7 @@ public class ExerciseGenerator {
             MuscleGroup.FULL_BODY
     );
 
-    public static List<Exercise> loadExercises(MuscleGroup muscleGroup) {
-        Long customWorkoutId = Constants.CATALOG_WORKOUT_ID;
-
+    public static List<Exercise> loadExercises(MuscleGroup muscleGroup, Long customWorkoutId) {
         switch (muscleGroup) {
             case CHEST:
                 return getChestExercises(customWorkoutId);
@@ -77,7 +69,7 @@ public class ExerciseGenerator {
         List<ExerciseDto> exercisesList = new ArrayList<>();
 
         for (MuscleGroup muscleGroup : SUPPORTED_MUSCLE_GROUPS) {
-            List<Exercise> generatedExercises = loadExercises(muscleGroup);
+            List<Exercise> generatedExercises = loadExercises(muscleGroup, Constants.CATALOG_WORKOUT_ID);
 
             for (Exercise exercise : generatedExercises) {
                 ExerciseDto exerciseDto = new ExerciseDto(
@@ -87,7 +79,7 @@ public class ExerciseGenerator {
                         exercise.getMuscleGroupId(),
                         exercise.getMachineTypeId(),
                         exercise.getSnapshot(),
-                        null
+                        new ArrayList<>()
                 );
                 exercisesList.add(exerciseDto);
             }
@@ -119,6 +111,32 @@ public class ExerciseGenerator {
 
         return exercisesDetailsList;
     }
+
+    public static int getTotalExercisesForMuscleGroup(MuscleGroup muscleGroup) {
+        return switch (muscleGroup) {
+            case CHEST, BACK, TRICEPS, BICEPS, ARMS, SHOULDERS, LEGS, FULL_BODY -> {
+                Pair<Integer, Integer> range = getMuscleGroupRange(muscleGroup);
+                yield range.getSecond() - range.getFirst() + 1;
+            }
+            case ALL -> TOTAL_EXERCISES;
+            default -> throw new NoSuchElementException("Muscle Group " + muscleGroup + " doesn't have exercises");
+        };
+    }
+
+    public static Pair<Integer, Integer> getMuscleGroupRange(MuscleGroup muscleGroup) {
+        return switch (muscleGroup) {
+            case CHEST -> new Pair<>(1, 10);
+            case BACK -> new Pair<>(11, 21);
+            case TRICEPS -> new Pair<>(22, 31);
+            case BICEPS -> new Pair<>(32, 40);
+            case ARMS -> new Pair<>(22, 40);
+            case SHOULDERS -> new Pair<>(41, 50);
+            case LEGS -> new Pair<>(51, 60);
+            case FULL_BODY -> new Pair<>(1, 60);
+            default -> throw new NoSuchElementException("Muscle Group " + muscleGroup + " doesn't have exercises");
+        };
+    }
+
 
     private static List<Exercise> getLegsExercises(Long customWorkoutId) {
         return List.of(
@@ -298,5 +316,15 @@ public class ExerciseGenerator {
                 new ExerciseDetails(49L, customWorkoutId, "Reverse pec deck", description, MuscleGroup.SHOULDERS.getMuscleGroupId(), MachineType.MACHINE.getMachineTypeId(), snapshot, videoUrl),
                 new ExerciseDetails(50L, customWorkoutId, "Dumbbell behind the back press", description, MuscleGroup.SHOULDERS.getMuscleGroupId(), MachineType.DUMBBELL.getMachineTypeId(), snapshot, videoUrl)
         );
+    }
+
+    public static List<ExerciseSet> generateExerciseSets(Long exerciseId, Long workoutId, int count) {
+            List<ExerciseSet> sets = new ArrayList<>();
+
+            sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId, 1, 12, 20f, null));
+            sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId,   2, 10, 50f, null));
+            sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId,  3, 8, 75f, null));
+            sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId,   4, 1, 225f, null));
+            return sets;
     }
 }

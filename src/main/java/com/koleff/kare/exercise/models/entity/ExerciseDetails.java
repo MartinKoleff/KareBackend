@@ -42,7 +42,7 @@ public @Data class ExerciseDetails {
     )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
-            generator = "exercise_details_generator" //TODO: Use same generator as exercise -> same IDs
+            generator = "exercise_details_generator"
     )
     @Column(
             name = ID_COLUMN,
@@ -120,7 +120,7 @@ public @Data class ExerciseDetails {
     @OneToOne
     @JoinColumn(
             name = ID_COLUMN,
-            referencedColumnName = Exercise.ID_COLUMN,
+            referencedColumnName = Exercise.EXERCISE_ID_COLUMN,
             nullable = false,
             insertable = false,
             updatable = false,

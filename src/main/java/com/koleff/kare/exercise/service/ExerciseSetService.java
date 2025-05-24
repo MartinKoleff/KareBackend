@@ -1,10 +1,8 @@
 package com.koleff.kare.exercise.service;
 
 import com.koleff.kare.exercise.models.dto.ExerciseSetDto;
-import com.koleff.kare.exercise.models.entity.ExerciseSet;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ExerciseSetService {
 

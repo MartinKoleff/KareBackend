@@ -3,20 +3,19 @@ package com.koleff.kare.exercise.models.entity;
 import com.koleff.kare.workout.models.entity.WorkoutDetails;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = Exercise.TABLE_NAME)
+//@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public @Data class Exercise {
     public static final String TABLE_NAME = "exercise_table";
-    public static final String ID_COLUMN = "exercise_id";
+    public static final String ID_COLUMN = "id";
+    public static final String EXERCISE_ID_COLUMN = "exercise_id";
     public static final String WORKOUT_ID_COLUMN = "workout_id";
     public static final String WORKOUT_DETAILS_ID_FOREIGN_KEY_COLUMN = "workout_details_id_fk";
     public static final String NAME_COLUMN = "name";
@@ -33,15 +32,25 @@ public @Data class Exercise {
         this.snapshot = snapshot;
     }
 
+    public Exercise(Long exerciseId, Long workoutId, String name, Integer muscleGroupId, Integer machineTypeId, String snapshot, List<ExerciseSet> sets) {
+        this.exerciseId = exerciseId;
+        this.workoutId = workoutId;
+        this.name = name;
+        this.muscleGroupId = muscleGroupId;
+        this.machineTypeId = machineTypeId;
+        this.snapshot = snapshot;
+        this.sets = sets;
+    }
+
     @Id
     @SequenceGenerator(
-            name = "exercise_generator",
+            name = "exercise_id_generator",
             sequenceName = "exercise_sequence",
             allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.IDENTITY,
-            generator = "exercise_generator"
+            generator = "exercise_id_generator"
     )
     @Column(
             name = ID_COLUMN,
@@ -49,6 +58,16 @@ public @Data class Exercise {
             unique = true,
             nullable = false
     )
+    @NotNull(message = "Id must not be empty")
+    private Long id;
+
+    @Column(
+            name = EXERCISE_ID_COLUMN,
+            updatable = false,
+            unique = false,
+            nullable = false
+    )
+    @NotNull(message = "Exercise id must not be empty.")
     private Long exerciseId;
 
     @Column(
@@ -109,9 +128,9 @@ public @Data class Exercise {
     )
     private WorkoutDetails workoutDetails;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.MERGE, orphanRemoval = true)
     private List<ExerciseSet> sets;
 
-    @OneToOne(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "exercise", cascade = CascadeType.PERSIST) // or MERGE
     private ExerciseDetails exerciseDetails;
 }

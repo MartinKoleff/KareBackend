@@ -345,13 +345,10 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
                 .map(exerciseSetMapper::toEntity)
                 .toList();
 
+        //TODO: edge case -> exerciseDto has sets with different workoutId and exerciseId?
         exerciseRepository.save(updatedExercise);
 
-        updatedSets.forEach(set -> {
-            set.setWorkoutId(updatedExercise.getWorkoutId());
-            exerciseSetRepository.save(set);
-        });
-
+        exerciseSetRepository.saveAll(updatedSets);
 //        exerciseSetRepository.saveAll(sets);
     }
 
@@ -369,7 +366,7 @@ public class WorkoutCustomServiceImpl implements WorkoutCustomService {
 
         //Delete old sets
         dbEntry.sets()
-                .forEach(set -> exerciseSetRepository.deleteByExerciseSetId(set.id().toString()));
+                .forEach(set -> exerciseSetRepository.deleteByExerciseSetId(set.id()));
 
         //Add new sets
         exercise.sets()
