@@ -1,12 +1,11 @@
-package com.koleff.kare.workout.configuration;
+package com.koleff.kare.exercise.configuration;
 
-import com.koleff.kare.common.Constants;
 import com.koleff.kare.common.ExerciseGenerator;
+import com.koleff.kare.common.WorkoutGenerator;
 import com.koleff.kare.exercise.mapper.ExerciseDetailsMapper;
 import com.koleff.kare.exercise.mapper.ExerciseMapper;
 import com.koleff.kare.exercise.models.entity.Exercise;
 import com.koleff.kare.exercise.models.entity.ExerciseDetails;
-import com.koleff.kare.exercise.models.entity.MuscleGroup;
 import com.koleff.kare.exercise.repository.ExerciseDetailsRepository;
 import com.koleff.kare.exercise.repository.ExerciseRepository;
 import com.koleff.kare.workout.models.entity.Workout;
@@ -22,7 +21,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import java.util.List;
 
 @Configuration
-public class WorkoutExerciseDBConfiguration {
+public class CatalogExerciseDBConfiguration {
     private final WorkoutRepository workoutRepository;
     private final WorkoutDetailsRepository workoutDetailsRepository;
     private final ExerciseRepository exerciseRepository;
@@ -32,7 +31,7 @@ public class WorkoutExerciseDBConfiguration {
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public WorkoutExerciseDBConfiguration(
+    public CatalogExerciseDBConfiguration(
             WorkoutRepository workoutRepository,
             WorkoutDetailsRepository workoutDetailsRepository,
             ExerciseRepository exerciseRepository,
@@ -51,30 +50,13 @@ public class WorkoutExerciseDBConfiguration {
     }
 
     @Bean
-    public CommandLineRunner initializeWorkoutAndExerciseDatabase() {
+    public CommandLineRunner initializeCatalogExerciseDatabase() {
         return args -> {
 
             //Catalog workout
-            Workout catalogWorkout = new Workout(
-                    Constants.CATALOG_WORKOUT_ID,
-                    "Catalog workout",
-                    MuscleGroup.NONE.getMuscleGroupId(),
-                    "",
-                    60, //TODO: update to MuscleGroup.ALL.getTotalExercises()
-                    false,
-                    null
-            );
+            Workout catalogWorkout = WorkoutGenerator.generateCatalogWorkout();
 
-            WorkoutDetails catalogWorkoutDetails = new WorkoutDetails(
-                    Constants.CATALOG_WORKOUT_ID,
-                    "Catalog workout details",
-                    "",
-                    MuscleGroup.NONE.getMuscleGroupId(),
-                    false,
-                    null,
-                    null,
-                    null
-            );
+            WorkoutDetails catalogWorkoutDetails = WorkoutGenerator.generateCatalogWorkoutDetails();
 
 //            workoutRepository.saveAndFlush(catalogWorkout);
 //            workoutDetailsRepository.saveAndFlush(catalogWorkoutDetails);
@@ -104,6 +86,7 @@ public class WorkoutExerciseDBConfiguration {
                     .stream()
                     .map(exerciseMapper::toEntity)
                     .toList();
+
 
             List<ExerciseDetails> exerciseDetailsList = ExerciseGenerator.getAllExerciseDetails()
                     .stream()
