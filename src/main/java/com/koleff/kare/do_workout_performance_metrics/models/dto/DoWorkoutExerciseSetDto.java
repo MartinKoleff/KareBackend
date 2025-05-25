@@ -4,15 +4,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.koleff.kare.do_workout_performance_metrics.models.entity.ExerciseTime;
 
 import java.util.Date;
-import java.util.UUID;
 
 public record DoWorkoutExerciseSetDto(
 
         @JsonProperty("instance_id")
         String instanceId,
 
-        @JsonProperty("workout_performance_metrics_ic")
-        Long workoutPerformanceMetricsId,
+        @JsonProperty("do_workout_performance_metrics_id")
+        Long doWorkoutPerformanceMetricsId,
 
         @JsonProperty("workout_id")
         Long workoutId,

@@ -79,15 +79,15 @@ public class WorkoutDBConfiguration {
                         workoutDetails.getExercises().forEach(
                                 exercise -> {
                                     exercise.setWorkoutDetails(workoutDetails);
-
-                                    List< ExerciseSet> exerciseSetsList = ExerciseGenerator.generateExerciseSets(exercise.getExerciseId(), exercise.getWorkoutId(), 4);
-                                    exerciseSetsList.forEach(set -> set.setExercise(exercise));
-                                    exercise.setSets(exerciseSetsList);
+//
+//                                    List< ExerciseSet> exerciseSetsList = ExerciseGenerator.generateExerciseSets(exercise.getExerciseId(), exercise.getWorkoutId(), 4);
+//                                    exerciseSetsList.forEach(set -> set.setExercise(exercise));
+//                                    exercise.setSets(exerciseSetsList);
                                     exerciseRepository.save(exercise);
 
-                                    exerciseSetsList.forEach(
+                                    exercise.getSets().forEach(
                                             exerciseSet -> {
-                                                exerciseSet.setExercise(exercise);
+//                                                exerciseSet.setExercise(exercise);
                                                 exerciseSetRepository.save(exerciseSet);
                                             }
                                     );

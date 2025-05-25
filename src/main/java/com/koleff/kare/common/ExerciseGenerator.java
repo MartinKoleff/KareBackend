@@ -3,6 +3,7 @@ package com.koleff.kare.common;
 import com.koleff.kare.exercise.models.dto.ExerciseDetailsDto;
 import com.koleff.kare.exercise.models.dto.ExerciseDto;
 import com.koleff.kare.exercise.models.entity.*;
+import com.koleff.kare.workout.models.entity.WorkoutDetails;
 
 import java.util.*;
 
@@ -49,6 +50,22 @@ public class ExerciseGenerator {
             default:
                 return List.of();
         }
+    }
+
+
+    public static List<Exercise> loadExercisesWithSets(MuscleGroup muscleGroup, long customWorkoutId) {
+        List<Exercise> exercises = loadExercises(muscleGroup, customWorkoutId);
+
+        exercises.forEach(
+                exercise -> {
+//                    exercise.setWorkoutDetails(workoutDetails);
+                    List<ExerciseSet> exerciseSetsList = ExerciseGenerator.generateExerciseSets(exercise.getExerciseId(), exercise.getWorkoutId(), 4);
+                    exerciseSetsList.forEach(set -> set.setExercise(exercise));
+                    exercise.setSets(exerciseSetsList);
+                    exerciseSetsList.forEach(exerciseSet -> exerciseSet.setExercise(exercise));
+                });
+
+        return exercises;
     }
 
     public static List<ExerciseDetails> loadExerciseDetails(MuscleGroup muscleGroup) {
@@ -319,12 +336,12 @@ public class ExerciseGenerator {
     }
 
     public static List<ExerciseSet> generateExerciseSets(Long exerciseId, Long workoutId, int count) {
-            List<ExerciseSet> sets = new ArrayList<>();
+        List<ExerciseSet> sets = new ArrayList<>();
 
-            sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId, 1, 12, 20f, null));
-            sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId,   2, 10, 50f, null));
-            sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId,  3, 8, 75f, null));
-            sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId,   4, 1, 225f, null));
-            return sets;
+        sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId, 1, 12, 20f, null));
+        sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId, 2, 10, 50f, null));
+        sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId, 3, 8, 75f, null));
+        sets.add(new ExerciseSet(UUID.randomUUID().toString(), exerciseId, workoutId, 4, 1, 225f, null));
+        return sets;
     }
 }

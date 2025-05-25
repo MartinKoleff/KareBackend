@@ -128,7 +128,7 @@ public @Data class Exercise {
     )
     private WorkoutDetails workoutDetails;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.MERGE, orphanRemoval = true)
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.MERGE)
     private List<ExerciseSet> sets;
 
     @OneToOne(mappedBy = "exercise", cascade = CascadeType.PERSIST) // or MERGE

@@ -7,10 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-import static com.koleff.kare.workout.models.entity.WorkoutConfiguration.WORKOUT_DETAILS_ID_COLUMN;
 
 @Entity
 @Table(name = DoWorkoutExerciseSet.TABLE_NAME)
@@ -43,7 +39,7 @@ public @Data class DoWorkoutExerciseSet {
     @Column(
             name = DO_WORKOUT_PERFORMANCE_METRICS_ID_COLUMN,
             updatable = false,
-            unique = true,
+            unique = false,
             nullable = false
     )
     @NotNull(message = "Do workout performance metrics id must not be empty")
@@ -109,8 +105,8 @@ public @Data class DoWorkoutExerciseSet {
             unique = false,
             nullable = false
     )
+    @Convert(converter = ExerciseTimeConverter.class)
     @NotNull(message = "Time done must not be empty")
-    @Embedded
     private ExerciseTime time;
 
     @Column(
@@ -134,4 +130,20 @@ public @Data class DoWorkoutExerciseSet {
             )
     )
     private DoWorkoutPerformanceMetrics doWorkoutPerformanceMetrics;
+
+    @Override
+    public String toString() {
+        return "DoWorkoutExerciseSet{" +
+                "instanceId='" + instanceId + '\'' +
+                ", doWorkoutPerformanceMetricsId=" + doWorkoutPerformanceMetricsId +
+                ", workoutId=" + workoutId +
+                ", exerciseId=" + exerciseId +
+                ", templateSetId='" + templateSetId + '\'' +
+                ", reps=" + reps +
+                ", weight=" + weight +
+                ", isDone=" + isDone +
+                ", time=" + time +
+                ", date=" + date +
+                '}';
+    }
 }

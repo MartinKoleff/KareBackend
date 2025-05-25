@@ -9,13 +9,12 @@ import com.koleff.kare.do_workout_performance_metrics.services.DoWorkoutExercise
 import com.koleff.kare.do_workout_performance_metrics.services.DoWorkoutPerformanceMetricsService;
 import com.koleff.kare.workout.models.request.FetchWorkoutByWorkoutIdRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
-@RequestMapping("api/v1/doworkoutperformancemetrics")
+@RestController
+@RequestMapping("/api/v1/doworkoutperformancemetrics")
 public class DoWorkoutPerformanceMetricsController {
 
     private final DoWorkoutPerformanceMetricsService doWorkoutPerformanceMetricsService;

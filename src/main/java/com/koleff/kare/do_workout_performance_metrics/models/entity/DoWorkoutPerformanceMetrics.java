@@ -1,6 +1,5 @@
 package com.koleff.kare.do_workout_performance_metrics.models.entity;
 
-import com.koleff.kare.workout.models.entity.Workout;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -64,4 +63,14 @@ public @Data class DoWorkoutPerformanceMetrics {
             orphanRemoval = true
     )
     private List<DoWorkoutExerciseSet> doWorkoutExerciseSets;
+
+    @Override
+    public String toString() {
+        return "DoWorkoutPerformanceMetrics{" +
+                "id=" + id +
+                ", workoutId=" + workoutId +
+                ", date=" + date +
+                ", doWorkoutExerciseSetsCount=" + (doWorkoutExerciseSets != null ? doWorkoutExerciseSets.size() : 0) +
+                '}';
+    }
 }

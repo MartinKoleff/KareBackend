@@ -63,6 +63,7 @@ public class WorkoutGenerator {
             if (workoutsList.isEmpty()) {
                 generateWorkouts();
             }
+
             WorkoutDetails workoutDetails1 = new WorkoutDetails(
                     1L,
                     "Arnold chest workout",
@@ -70,7 +71,7 @@ public class WorkoutGenerator {
                     MuscleGroup.CHEST.getMuscleGroupId(),
                     false,
                     workoutsList.get(0),
-                    ExerciseGenerator.loadExercises(MuscleGroup.CHEST, 1L),
+                    ExerciseGenerator.loadExercisesWithSets(MuscleGroup.CHEST, 1L),
                     generateWorkoutConfiguration(1L)
             );
             workoutDetailsList.add(workoutDetails1);
@@ -82,7 +83,7 @@ public class WorkoutGenerator {
                     MuscleGroup.BACK.getMuscleGroupId(),
                     false,
                     workoutsList.get(1),
-                    ExerciseGenerator.loadExercises(MuscleGroup.BACK, 2L),
+                    ExerciseGenerator.loadExercisesWithSets(MuscleGroup.BACK, 2L),
                     generateWorkoutConfiguration(2L)
             );
             workoutDetailsList.add(workoutDetails2);
@@ -94,7 +95,7 @@ public class WorkoutGenerator {
                     MuscleGroup.ARMS.getMuscleGroupId(),
                     true,
                     workoutsList.get(2),
-                    ExerciseGenerator.loadExercises(MuscleGroup.BACK, 3L),
+                    ExerciseGenerator.loadExercisesWithSets(MuscleGroup.BACK, 3L),
                     generateWorkoutConfiguration(3L)
             );
             workoutDetailsList.add(workoutDetails3);

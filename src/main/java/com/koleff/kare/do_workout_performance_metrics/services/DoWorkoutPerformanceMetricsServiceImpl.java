@@ -1,12 +1,12 @@
 package com.koleff.kare.do_workout_performance_metrics.services;
 
 import com.koleff.kare.common.error.exceptions.DoWorkoutPerformanceMetricsNotFoundException;
-import com.koleff.kare.do_workout_performance_metrics.mapper.DoWorkoutExerciseSetMapper;
 import com.koleff.kare.do_workout_performance_metrics.mapper.DoWorkoutPerformanceMetricsMapper;
 import com.koleff.kare.do_workout_performance_metrics.models.dto.DoWorkoutPerformanceMetricsDto;
 import com.koleff.kare.do_workout_performance_metrics.models.entity.DoWorkoutPerformanceMetrics;
-import com.koleff.kare.do_workout_performance_metrics.repository.DoWorkoutExerciseSetRepository;
 import com.koleff.kare.do_workout_performance_metrics.repository.DoWorkoutPerformanceMetricsRepository;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +18,7 @@ public class DoWorkoutPerformanceMetricsServiceImpl implements DoWorkoutPerforma
 
     private final DoWorkoutPerformanceMetricsRepository doWorkoutPerformanceMetricsRepository;
     private final DoWorkoutPerformanceMetricsMapper doWorkoutPerformanceMetricsMapper;
+    private final static Logger logger = LogManager.getLogger(DoWorkoutPerformanceMetricsServiceImpl.class);
 
     @Autowired
     public DoWorkoutPerformanceMetricsServiceImpl(
@@ -78,6 +79,16 @@ public class DoWorkoutPerformanceMetricsServiceImpl implements DoWorkoutPerforma
     public List<DoWorkoutPerformanceMetricsDto> getAllDoWorkoutPerformanceMetrics() {
         List<DoWorkoutPerformanceMetrics> performanceMetricsList = doWorkoutPerformanceMetricsRepository.findAllWorkoutPerformanceMetrics();
 
+        performanceMetricsList.forEach(
+                performanceMetrics -> {
+                    logger.info("performance metrics: " + performanceMetrics.toString());
+                    performanceMetrics.getDoWorkoutExerciseSets().forEach(
+                            doWorkoutExerciseSet -> {
+                                logger.info("performance metrics set: " + doWorkoutExerciseSet.toString());
+                            }
+                    );
+                }
+        );
         return performanceMetricsList.stream()
                 .map(doWorkoutPerformanceMetricsMapper::toDto)
                 .toList();
