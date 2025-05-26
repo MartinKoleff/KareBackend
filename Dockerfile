@@ -15,4 +15,5 @@ RUN mvn clean package -DskipTests
 FROM openjdk:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/target/kare-0.0.1-SNAPSHOT.jar kare-0.0.1-SNAPSHOT.jar
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "kare-0.0.1-SNAPSHOT.jar"]
