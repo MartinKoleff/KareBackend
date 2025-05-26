@@ -14,6 +14,7 @@ services:
 
   recipe:
     container_name: kare-server
+    image: mkoleff/kare-server:v2
     build:
       context: .
       dockerfile: Dockerfile
@@ -27,20 +28,20 @@ services:
     depends_on:
       - psql-db
 
-  cloudflare-ddns:
-    container_name: cloudflare-ddns
-    image: oznu/cloudflare-ddns:latest
-    restart: unless-stopped
-    environment:
-      API_KEY: cKu-_GoHo7_zlKjHIzoCQgng__iPPAa30tTJH0fT
-      ZONE: mkoleff.com
-      PROXIED: false
+#  cloudflare-ddns:
+#    container_name: cloudflare-ddns
+#    image: oznu/cloudflare-ddns:latest
+#    restart: unless-stopped
+#    environment:
+#      API_KEY: cKu-_GoHo7_zlKjHIzoCQgng__iPPAa30tTJH0fT
+#      ZONE: mkoleff.com
+#      PROXIED: false
 
-  nginx:
-    image: nginx:stable-alpine
-    container_name: nginx
-    restart: always
-    ports:
-      - "80:80"
-    volumes:
-      - ./nginx:/etc/nginx/conf.d/
+#  nginx:
+#    image: nginx:stable-alpine
+#    container_name: nginx
+#    restart: always
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./nginx:/etc/nginx/conf.d/
